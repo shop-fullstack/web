@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Truck, CreditCard, Wallet, Building2, Check, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useQueryClient } from "@tanstack/react-query";
 import { Header } from "@/components/header";
 import { useCartStore } from "@/store/cart-store";
 import { useCreateOrder } from "@/lib/queries";
@@ -29,6 +30,7 @@ export default function CheckoutPage() {
   const totalAmount = useCartStore((s) => s.totalAmount);
   const clear = useCartStore((s) => s.clear);
 
+  const queryClient = useQueryClient();
   const orderMutation = useCreateOrder();
 
   const [paymentMethod, setPaymentMethod] = useState<string>("card");
@@ -49,6 +51,7 @@ export default function CheckoutPage() {
         is_cold: false,
       });
       clear();
+      await queryClient.invalidateQueries({ queryKey: ["orders"] });
       router.push("/orders");
     } catch (err) {
       setError(
