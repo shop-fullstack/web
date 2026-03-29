@@ -44,7 +44,7 @@ function getChangeIndicator(change: "up" | "down" | "same" | "new") {
 }
 
 export default function Home() {
-  const { data: productsData, isLoading: productsLoading } = useProducts({
+  const { data: productsData, isLoading: productsLoading, isError: productsError, refetch: refetchProducts } = useProducts({
     sort: "popular",
     limit: 4,
   });
@@ -250,29 +250,43 @@ export default function Home() {
             />
           </Link>
         </motion.div>
-        <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
-          {productsLoading
-            ? Array.from({ length: 4 }).map((_, i) => (
-                <motion.div
-                  key={i}
-                  variants={scaleIn}
-                  className="animate-pulse overflow-hidden rounded-2xl border border-gray-100 bg-white"
-                >
-                  <div className="h-[200px] bg-gradient-to-br from-gray-100 to-gray-50" />
-                  <div className="flex flex-col gap-3 p-5">
-                    <div className="h-4 w-16 rounded-full bg-gray-100" />
-                    <div className="h-5 w-3/4 rounded bg-gray-100" />
-                    <div className="h-5 w-1/2 rounded bg-gray-100" />
-                    <div className="h-11 rounded-xl bg-gray-100" />
-                  </div>
-                </motion.div>
-              ))
-            : products.map((product) => (
-                <motion.div key={product.id} variants={scaleIn}>
-                  <ProductCard product={product} />
-                </motion.div>
-              ))}
-        </div>
+        {productsError && !productsLoading && products.length === 0 ? (
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-100 bg-white py-16">
+            <p className="text-gray-500">상품을 불러오지 못했습니다</p>
+            <p className="mt-1 text-sm text-gray-400">서버가 준비 중일 수 있습니다</p>
+            <button
+              type="button"
+              onClick={() => refetchProducts()}
+              className="mt-4 rounded-xl bg-gradient-to-r from-primary-700 to-primary-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-700/20 hover:brightness-110"
+            >
+              다시 시도
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
+            {productsLoading
+              ? Array.from({ length: 4 }).map((_, i) => (
+                  <motion.div
+                    key={i}
+                    variants={scaleIn}
+                    className="animate-pulse overflow-hidden rounded-2xl border border-gray-100 bg-white"
+                  >
+                    <div className="h-[200px] bg-gradient-to-br from-gray-100 to-gray-50" />
+                    <div className="flex flex-col gap-3 p-5">
+                      <div className="h-4 w-16 rounded-full bg-gray-100" />
+                      <div className="h-5 w-3/4 rounded bg-gray-100" />
+                      <div className="h-5 w-1/2 rounded bg-gray-100" />
+                      <div className="h-11 rounded-xl bg-gray-100" />
+                    </div>
+                  </motion.div>
+                ))
+              : products.map((product) => (
+                  <motion.div key={product.id} variants={scaleIn}>
+                    <ProductCard product={product} />
+                  </motion.div>
+                ))}
+          </div>
+        )}
       </motion.section>
 
       {/* Footer */}
