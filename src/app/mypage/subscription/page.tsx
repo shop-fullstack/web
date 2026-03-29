@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AlertTriangle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { AlertTriangle, Plus, Package, CalendarClock, Truck } from "lucide-react";
 import { Header } from "@/components/header";
 import type { SubscriptionItem } from "@/types";
 
@@ -43,6 +44,19 @@ const initialSubscriptions: SubscriptionItem[] = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.12 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as const } },
+};
+
 export default function SubscriptionPage() {
   const [subscriptions, setSubscriptions] = useState(initialSubscriptions);
 
@@ -55,95 +69,156 @@ export default function SubscriptionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50/50">
       <Header />
 
-      <main className="mx-auto max-w-layout px-20 py-8">
+      <main className="mx-auto max-w-layout px-20 py-10">
         {/* Title */}
-        <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-bold text-gray-900">정기구독 관리</h1>
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col gap-2"
+        >
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+            정기구독 관리
+          </h1>
           <p className="text-sm text-gray-500">
             자주 구매하는 상품을 정기적으로 편리하게 받으세요
           </p>
-        </div>
+        </motion.div>
 
         {/* Subscription cards */}
-        <div className="mt-6 flex flex-col gap-6">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="mt-8 flex flex-col gap-5"
+        >
           {subscriptions.map((sub) => (
-            <div
+            <motion.div
               key={sub.id}
-              className="rounded-lg border border-gray-200 bg-white p-6"
+              variants={cardVariants}
+              whileHover={{ y: -2, transition: { duration: 0.2 } }}
+              className={`rounded-2xl bg-white border shadow-sm p-6 transition-all hover:shadow-md ${
+                sub.active ? "border-gray-100" : "border-gray-100 opacity-75"
+              }`}
             >
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start justify-between gap-6">
                 {/* Left content */}
-                <div className="flex flex-col gap-4">
-                  {/* Product name + badge */}
-                  <div className="flex items-center gap-3">
-                    <span className="text-[15px] font-bold text-gray-900">
-                      {sub.product.name}
-                    </span>
-                    <span className="rounded-full bg-gray-50 px-2.5 py-0.5 text-xs font-medium text-gray-500">
-                      {sub.product.category}
-                    </span>
+                <div className="flex gap-5">
+                  {/* Product icon */}
+                  <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${
+                    sub.active
+                      ? "bg-gradient-to-br from-primary-50 to-indigo-50"
+                      : "bg-gray-50"
+                  }`}>
+                    <Package size={24} className={sub.active ? "text-primary-500" : "text-gray-300"} />
                   </div>
 
-                  {/* Cycle + quantity */}
-                  <div className="flex items-center gap-4 text-sm text-gray-900">
-                    <span>{sub.cycle}</span>
-                    <span className="text-gray-200">|</span>
-                    <span>총 {sub.quantity}개</span>
-                  </div>
+                  <div className="flex flex-col gap-3">
+                    {/* Product name + badge */}
+                    <div className="flex items-center gap-3">
+                      <span className="text-[15px] font-bold text-gray-900">
+                        {sub.product.name}
+                      </span>
+                      <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">
+                        {sub.product.category}
+                      </span>
+                    </div>
 
-                  {/* Next delivery */}
-                  <p className="text-sm text-gray-500">
-                    다음 배송 예정일: {sub.next_delivery}
-                  </p>
+                    {/* Cycle + quantity */}
+                    <div className="flex items-center gap-4 text-sm text-gray-600">
+                      <span className="flex items-center gap-1.5">
+                        <CalendarClock size={14} className="text-gray-400" />
+                        {sub.cycle}
+                      </span>
+                      <span className="h-3.5 w-px bg-gray-200" />
+                      <span>총 {sub.quantity}개</span>
+                    </div>
+
+                    {/* Next delivery */}
+                    <p className="flex items-center gap-1.5 text-sm text-gray-400">
+                      <Truck size={14} />
+                      다음 배송 예정일: {sub.next_delivery}
+                    </p>
+
+                    {/* Paused indicator */}
+                    <AnimatePresence>
+                      {!sub.active && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="overflow-hidden"
+                        >
+                          <span className="inline-flex items-center rounded-full bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/60 px-3 py-1 text-xs font-semibold text-amber-600">
+                            일시정지됨
+                          </span>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
 
                 {/* Toggle switch */}
                 <button
                   onClick={() => toggleSubscription(sub.id)}
-                  className={`relative mt-1 h-6 w-11 shrink-0 rounded-full transition-colors ${
-                    sub.active ? "bg-primary-500" : "bg-gray-200"
+                  className={`relative mt-2 h-7 w-12 shrink-0 rounded-full transition-colors duration-300 ${
+                    sub.active
+                      ? "bg-gradient-to-r from-primary-500 to-indigo-500 shadow-sm shadow-primary-200/50"
+                      : "bg-gray-200"
                   }`}
                   aria-label={sub.active ? "구독 일시정지" : "구독 재개"}
                 >
-                  <span
-                    className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${
+                  <motion.span
+                    layout
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    className={`absolute top-0.5 h-6 w-6 rounded-full bg-white shadow-md ${
                       sub.active ? "left-[22px]" : "left-0.5"
                     }`}
                   />
                 </button>
               </div>
-
-              {/* Paused indicator */}
-              {!sub.active && (
-                <div className="mt-3 inline-flex rounded-full bg-warning-light px-3 py-1 text-xs font-medium text-warning">
-                  일시정지됨
-                </div>
-              )}
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Add subscription button */}
-        <div className="mt-6">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mt-8"
+        >
           <Link
             href="/products"
-            className="inline-flex items-center rounded-lg border border-gray-200 px-5 py-2.5 text-sm font-medium text-primary-700 transition-colors hover:border-primary-700 hover:bg-primary-100"
+            className="group inline-flex items-center gap-2 rounded-2xl border-2 border-dashed border-gray-200 px-6 py-3.5 text-sm font-semibold text-gray-500 transition-all hover:border-primary-300 hover:text-primary-600 hover:bg-primary-50/50"
           >
+            <Plus size={18} className="transition-transform group-hover:rotate-90" />
             구독 상품 추가하기
           </Link>
-        </div>
+        </motion.div>
 
         {/* Warning banner */}
-        <div className="mt-6 flex items-start gap-3 rounded-lg bg-warning-light px-5 py-4">
-          <AlertTriangle size={18} className="mt-0.5 shrink-0 text-warning" />
-          <p className="text-sm text-gray-900">
-            정기구독은 데모 기능입니다. 월별 결제 및 배송은 기능적으로
-            시뮬레이팅됩니다.
-          </p>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.4 }}
+          className="mt-8 flex items-center gap-4 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/40 px-6 py-5"
+        >
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-sm">
+            <AlertTriangle size={18} className="text-white" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-gray-800">
+              데모 기능 안내
+            </p>
+            <p className="mt-0.5 text-sm text-gray-500">
+              정기구독은 데모 기능입니다. 월별 결제 및 배송은 기능적으로 시뮬레이팅됩니다.
+            </p>
+          </div>
+        </motion.div>
       </main>
     </div>
   );

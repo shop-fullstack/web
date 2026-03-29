@@ -7,10 +7,12 @@ export function getToken(): string | null {
 
 export function setToken(token: string): void {
   localStorage.setItem("access_token", token);
+  document.cookie = `access_token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
 }
 
 export function removeToken(): void {
   localStorage.removeItem("access_token");
+  document.cookie = "access_token=; path=/; max-age=0";
 }
 
 export function getUser(): User | null {

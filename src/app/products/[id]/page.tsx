@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Minus, Plus, Package } from "lucide-react";
+import Link from "next/link";
+import { Minus, Plus, Package, ChevronRight, ShoppingBag, Zap } from "lucide-react";
+import { motion } from "framer-motion";
 import { Header } from "@/components/header";
 import { useProduct } from "@/lib/queries";
 import { useCartStore } from "@/store/cart-store";
@@ -21,32 +23,58 @@ export default function ProductDetailPage({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-gradient-to-b from-gray-50/80 to-white">
         <Header />
         <div className="mx-auto max-w-layout px-20 py-10">
-          <div className="flex gap-12">
+          {/* Breadcrumb skeleton */}
+          <div className="mb-8 flex items-center gap-2">
+            <div className="h-4 w-12 animate-pulse rounded-lg bg-gray-200" />
+            <div className="h-4 w-3 animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-16 animate-pulse rounded-lg bg-gray-200" />
+            <div className="h-4 w-3 animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-32 animate-pulse rounded-lg bg-gray-200" />
+          </div>
+          <div className="flex gap-14">
             {/* Left skeleton */}
             <div className="flex-1">
-              <div className="aspect-square animate-pulse rounded-lg bg-gray-200" />
+              <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-100">
+                <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+              </div>
               <div className="mt-4 grid grid-cols-4 gap-3">
                 {[0, 1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className="aspect-square animate-pulse rounded-lg bg-gray-200"
-                  />
+                    className="relative aspect-square overflow-hidden rounded-xl bg-gray-100"
+                  >
+                    <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+                  </div>
                 ))}
               </div>
             </div>
             {/* Right skeleton */}
-            <div className="flex flex-1 flex-col gap-4">
-              <div className="h-4 w-32 animate-pulse rounded bg-gray-200" />
-              <div className="h-7 w-64 animate-pulse rounded bg-gray-200" />
-              <div className="mt-4 h-28 animate-pulse rounded-lg bg-gray-200" />
-              <div className="mt-4 h-10 w-48 animate-pulse rounded bg-gray-200" />
-              <div className="mt-4 h-16 animate-pulse rounded bg-gray-200" />
-              <div className="mt-4 flex gap-3">
-                <div className="h-12 flex-1 animate-pulse rounded-lg bg-gray-200" />
-                <div className="h-12 flex-1 animate-pulse rounded-lg bg-gray-200" />
+            <div className="flex flex-1 flex-col gap-5">
+              <div className="relative h-5 w-32 overflow-hidden rounded-lg bg-gray-100">
+                <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+              </div>
+              <div className="relative h-8 w-72 overflow-hidden rounded-lg bg-gray-100">
+                <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+              </div>
+              <div className="relative mt-2 h-32 overflow-hidden rounded-2xl bg-gray-100">
+                <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+              </div>
+              <div className="relative mt-2 h-12 w-48 overflow-hidden rounded-xl bg-gray-100">
+                <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+              </div>
+              <div className="relative h-16 overflow-hidden rounded-lg bg-gray-100">
+                <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+              </div>
+              <div className="mt-2 flex gap-3">
+                <div className="relative h-14 flex-1 overflow-hidden rounded-2xl bg-gray-100">
+                  <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+                </div>
+                <div className="relative h-14 flex-1 overflow-hidden rounded-2xl bg-gray-100">
+                  <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+                </div>
               </div>
             </div>
           </div>
@@ -57,16 +85,19 @@ export default function ProductDetailPage({
 
   if (isError || !product) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-gradient-to-b from-gray-50/80 to-white">
         <Header />
         <div className="flex flex-col items-center justify-center py-40">
-          <p className="text-lg font-medium text-gray-900">
+          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-100">
+            <Package size={40} className="text-gray-300" />
+          </div>
+          <p className="mt-5 text-lg font-semibold text-gray-900">
             상품을 찾을 수 없습니다
           </p>
           <button
             type="button"
             onClick={() => router.push("/products")}
-            className="mt-4 rounded-lg bg-primary-700 px-6 py-2.5 text-sm font-semibold text-white hover:bg-primary-900"
+            className="mt-5 rounded-2xl bg-gradient-to-r from-primary-700 to-primary-500 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-200 transition-all hover:shadow-xl hover:shadow-primary-300"
           >
             상품 목록으로
           </button>
@@ -95,168 +126,220 @@ export default function ProductDetailPage({
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50/80 to-white">
       <Header />
 
       <div className="mx-auto max-w-layout px-20 py-10">
-        <div className="flex gap-12">
+        {/* Breadcrumb */}
+        <motion.nav
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="mb-8 flex items-center gap-1.5 text-sm"
+        >
+          <Link
+            href="/"
+            className="text-gray-400 transition-colors hover:text-primary-700"
+          >
+            홈
+          </Link>
+          <ChevronRight size={14} className="text-gray-300" />
+          <Link
+            href="/products"
+            className="text-gray-400 transition-colors hover:text-primary-700"
+          >
+            상품
+          </Link>
+          <ChevronRight size={14} className="text-gray-300" />
+          <span className="text-gray-400">{product.category}</span>
+          <ChevronRight size={14} className="text-gray-300" />
+          <span className="font-medium text-gray-700 line-clamp-1 max-w-[300px]">
+            {product.name}
+          </span>
+        </motion.nav>
+
+        <div className="flex gap-14">
           {/* Left column - Images */}
-          <div className="flex-1">
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="flex-1"
+          >
             {/* Main image */}
-            <div className="flex aspect-square items-center justify-center rounded-lg bg-gray-200">
+            <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-gray-50 via-white to-gray-100 shadow-sm ring-1 ring-gray-100">
               {product.image_url ? (
                 <img
                   src={product.image_url}
                   alt={product.name}
-                  className="h-full w-full rounded-lg object-cover"
+                  className="h-full w-full rounded-2xl object-cover"
                 />
               ) : (
-                <Package size={80} className="text-gray-500" />
+                <Package size={80} className="text-gray-300" />
               )}
             </div>
 
             {/* Thumbnail row */}
             <div className="mt-4 grid grid-cols-4 gap-3">
               {[0, 1, 2, 3].map((i) => (
-                <div
+                <motion.div
                   key={i}
-                  className={`flex aspect-square items-center justify-center rounded-lg bg-gray-200 ${
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ duration: 0.2 }}
+                  className={`flex aspect-square cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 transition-all duration-200 ${
                     i === 0
-                      ? "ring-2 ring-primary-700"
-                      : "opacity-60"
+                      ? "ring-2 ring-primary-700 ring-offset-2"
+                      : "opacity-60 ring-1 ring-gray-200 hover:opacity-90 hover:ring-gray-300"
                   }`}
                 >
                   {i === 0 && product.image_url ? (
                     <img
                       src={product.image_url}
                       alt={product.name}
-                      className="h-full w-full rounded-lg object-cover"
+                      className="h-full w-full rounded-xl object-cover"
                     />
                   ) : (
-                    <Package
-                      size={24}
-                      className="text-gray-500"
-                    />
+                    <Package size={24} className="text-gray-400" />
                   )}
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Right column - Info */}
-          <div className="flex flex-1 flex-col">
-            {/* Breadcrumb */}
-            <p className="text-sm text-gray-500">
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 }}
+            className="flex flex-1 flex-col"
+          >
+            {/* Category badge */}
+            <span className="w-fit rounded-full bg-primary-100/80 px-3.5 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700">
               {product.category}
-            </p>
+            </span>
 
             {/* Product name */}
-            <h1 className="mt-2 text-[22px] font-bold text-gray-900">
+            <h1 className="mt-3 text-2xl font-bold leading-tight text-gray-900">
               {product.name}
             </h1>
 
             {/* Price box */}
-            <div className="mt-6 rounded-lg bg-primary-100 p-4">
+            <div className="mt-6 rounded-2xl bg-gradient-to-r from-primary-50 to-blue-50 p-5 ring-1 ring-primary-100/50">
               {product.price_per_unit !== product.price_per_box && (
-                <p className="text-sm text-gray-500 line-through">
+                <p className="text-sm text-gray-400 line-through">
                   개당 단가: {product.price_per_unit.toLocaleString()}원
                 </p>
               )}
-              <p className="mt-1 text-xl font-bold text-primary-700">
-                박스 {product.price_per_box.toLocaleString()}원
+              <p className="mt-1.5 text-2xl font-bold text-primary-700">
+                박스 {product.price_per_box.toLocaleString()}
+                <span className="text-lg font-semibold">원</span>
               </p>
-              <p className="mt-1 text-sm text-gray-500">
-                최소주문수량(MOQ): {product.moq}박스
+              <p className="mt-2 text-sm text-gray-500">
+                최소주문수량(MOQ): <span className="font-semibold text-gray-700">{product.moq}박스</span>
               </p>
             </div>
 
             {/* Quantity selector */}
-            <div className="mt-6 flex items-center gap-3">
-              <span className="text-sm font-medium text-gray-900">수량</span>
-              <div className="flex items-center rounded-lg border border-gray-200">
-                <button
+            <div className="mt-6 flex items-center gap-4">
+              <span className="text-sm font-semibold text-gray-900">수량</span>
+              <div className="flex items-center overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+                <motion.button
                   type="button"
                   onClick={handleDecrease}
-                  className="flex h-10 w-10 items-center justify-center text-gray-500 hover:bg-gray-200 disabled:opacity-40"
+                  whileHover={{ backgroundColor: "rgba(0,0,0,0.04)" }}
+                  whileTap={{ scale: 0.92 }}
+                  className="flex h-11 w-11 items-center justify-center text-gray-500 transition-colors disabled:opacity-40"
                   disabled={quantity <= 1}
                 >
                   <Minus size={16} />
-                </button>
-                <span className="flex h-10 w-12 items-center justify-center border-x border-gray-200 text-sm font-medium text-gray-900">
+                </motion.button>
+                <span className="flex h-11 w-14 items-center justify-center border-x border-gray-200 text-sm font-bold text-gray-900">
                   {quantity}
                 </span>
-                <button
+                <motion.button
                   type="button"
                   onClick={handleIncrease}
-                  className="flex h-10 w-10 items-center justify-center text-gray-500 hover:bg-gray-200"
+                  whileHover={{ backgroundColor: "rgba(0,0,0,0.04)" }}
+                  whileTap={{ scale: 0.92 }}
+                  className="flex h-11 w-11 items-center justify-center text-gray-500 transition-colors"
                 >
                   <Plus size={16} />
-                </button>
+                </motion.button>
               </div>
             </div>
 
             {/* Total */}
-            <div className="mt-6 flex items-center justify-between border-t border-gray-200 pt-6">
-              <span className="text-sm text-gray-500">총 상품 금액</span>
-              <span className="text-2xl font-bold text-gray-900">
-                {totalPrice.toLocaleString()}원
-              </span>
+            <div className="mt-6 flex items-center justify-between border-t border-gray-100 pt-6">
+              <span className="text-sm font-medium text-gray-500">총 상품 금액</span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-3xl font-extrabold text-gray-900">
+                  {totalPrice.toLocaleString()}
+                </span>
+                <span className="text-lg font-semibold text-gray-500">원</span>
+              </div>
             </div>
 
             {/* Action buttons */}
             <div className="mt-6 flex gap-3">
-              <button
+              <motion.button
                 type="button"
                 onClick={handleAddToCart}
-                className="flex h-12 flex-1 items-center justify-center rounded-lg border border-primary-700 bg-white text-sm font-semibold text-primary-700 transition-colors hover:bg-primary-100"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex h-14 flex-1 items-center justify-center gap-2 rounded-2xl border-2 border-primary-200 bg-white text-sm font-semibold text-primary-700 transition-all duration-200 hover:border-primary-300 hover:bg-primary-50 hover:shadow-md"
               >
+                <ShoppingBag size={18} />
                 장바구니 담기
-              </button>
-              <button
+              </motion.button>
+              <motion.button
                 type="button"
                 onClick={handleBuyNow}
-                className="flex h-12 flex-1 items-center justify-center rounded-lg bg-primary-700 text-sm font-semibold text-white transition-colors hover:bg-primary-900"
+                whileHover={{ scale: 1.02, boxShadow: "0 8px 30px -4px rgba(var(--color-primary-700), 0.4)" }}
+                whileTap={{ scale: 0.98 }}
+                className="flex h-14 flex-1 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-primary-700 to-primary-500 text-sm font-semibold text-white shadow-lg shadow-primary-200 transition-all duration-200 hover:shadow-xl hover:shadow-primary-300"
               >
+                <Zap size={18} />
                 바로 구매
-              </button>
+              </motion.button>
             </div>
 
             {/* Specs table */}
-            <div className="mt-8 rounded-lg border border-gray-200">
+            <div className="mt-10 overflow-hidden rounded-2xl ring-1 ring-gray-100">
               <table className="w-full text-sm">
                 <tbody>
-                  <tr className="border-b border-gray-200">
-                    <td className="w-[120px] bg-gray-50 px-4 py-3 font-medium text-gray-500">
+                  <tr>
+                    <td className="w-[130px] bg-gray-50/80 px-5 py-3.5 font-semibold text-gray-500">
                       카테고리
                     </td>
-                    <td className="px-4 py-3 text-gray-900">
+                    <td className="px-5 py-3.5 text-gray-900">
                       {product.category}
                     </td>
                   </tr>
-                  <tr className="border-b border-gray-200">
-                    <td className="bg-gray-50 px-4 py-3 font-medium text-gray-500">
+                  <tr className="border-t border-gray-100">
+                    <td className="bg-gray-50/80 px-5 py-3.5 font-semibold text-gray-500">
                       최소주문수량
                     </td>
-                    <td className="px-4 py-3 text-gray-900">
+                    <td className="px-5 py-3.5 text-gray-900">
                       {product.moq}박스
                     </td>
                   </tr>
                   {product.origin && (
-                    <tr className="border-b border-gray-200">
-                      <td className="bg-gray-50 px-4 py-3 font-medium text-gray-500">
+                    <tr className="border-t border-gray-100">
+                      <td className="bg-gray-50/80 px-5 py-3.5 font-semibold text-gray-500">
                         원산지
                       </td>
-                      <td className="px-4 py-3 text-gray-900">
+                      <td className="px-5 py-3.5 text-gray-900">
                         {product.origin}
                       </td>
                     </tr>
                   )}
                   {product.expiry_info && (
-                    <tr>
-                      <td className="bg-gray-50 px-4 py-3 font-medium text-gray-500">
+                    <tr className="border-t border-gray-100">
+                      <td className="bg-gray-50/80 px-5 py-3.5 font-semibold text-gray-500">
                         유통기한
                       </td>
-                      <td className="px-4 py-3 text-gray-900">
+                      <td className="px-5 py-3.5 text-gray-900">
                         {product.expiry_info}
                       </td>
                     </tr>
@@ -264,7 +347,7 @@ export default function ProductDetailPage({
                 </tbody>
               </table>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>
