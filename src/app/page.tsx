@@ -134,8 +134,7 @@ export default function Home() {
       <motion.section
         className="relative -mt-6 mx-auto max-w-layout px-8"
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
+        animate={!trendLoading ? "visible" : "hidden"}
         variants={stagger}
       >
         <motion.div
@@ -228,8 +227,7 @@ export default function Home() {
       <motion.section
         className="mx-auto max-w-layout px-8 pb-20"
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
+        animate={!productsLoading ? "visible" : "hidden"}
         variants={stagger}
       >
         <motion.div variants={fadeUp} className="mb-8 flex items-end justify-between">
