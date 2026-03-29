@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Minus, Plus, Package, ChevronRight, ShoppingBag, Zap } from "lucide-react";
+import { Minus, Plus, ChevronRight, ShoppingBag, Zap, Package } from "lucide-react";
 import { motion } from "framer-motion";
 import { Header } from "@/components/header";
 import { useProduct } from "@/lib/queries";
 import { useCartStore } from "@/store/cart-store";
+import { getCategoryVisual } from "@/lib/product-visuals";
 
 export default function ProductDetailPage({
   params,
@@ -167,44 +168,39 @@ export default function ProductDetailPage({
             className="flex-1"
           >
             {/* Main image */}
-            <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-gray-50 via-white to-gray-100 shadow-sm ring-1 ring-gray-100">
-              {product.image_url ? (
-                <img
-                  src={product.image_url}
-                  alt={product.name}
-                  className="h-full w-full rounded-2xl object-cover"
-                />
-              ) : (
-                <Package size={80} className="text-gray-300" />
-              )}
-            </div>
+            {(() => {
+              const visual = getCategoryVisual(product.category);
+              return (
+                <div className={`relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${visual.gradient} shadow-sm ring-1 ring-gray-100`}>
+                  <span className="text-[120px] drop-shadow-sm">{visual.emoji}</span>
+                </div>
+              );
+            })()}
 
             {/* Thumbnail row */}
-            <div className="mt-4 grid grid-cols-4 gap-3">
-              {[0, 1, 2, 3].map((i) => (
-                <motion.div
-                  key={i}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ duration: 0.2 }}
-                  className={`flex aspect-square cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 transition-all duration-200 ${
-                    i === 0
-                      ? "ring-2 ring-primary-700 ring-offset-2"
-                      : "opacity-60 ring-1 ring-gray-200 hover:opacity-90 hover:ring-gray-300"
-                  }`}
-                >
-                  {i === 0 && product.image_url ? (
-                    <img
-                      src={product.image_url}
-                      alt={product.name}
-                      className="h-full w-full rounded-xl object-cover"
-                    />
-                  ) : (
-                    <Package size={24} className="text-gray-400" />
-                  )}
-                </motion.div>
-              ))}
-            </div>
+            {(() => {
+              const visual = getCategoryVisual(product.category);
+              const angles = ["from-tl", "from-tr", "from-bl", "from-br"];
+              return (
+                <div className="mt-4 grid grid-cols-4 gap-3">
+                  {angles.map((_, i) => (
+                    <motion.div
+                      key={i}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.97 }}
+                      transition={{ duration: 0.2 }}
+                      className={`flex aspect-square cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br ${visual.gradient} transition-all duration-200 ${
+                        i === 0
+                          ? "ring-2 ring-primary-700 ring-offset-2"
+                          : "opacity-60 ring-1 ring-gray-200 hover:opacity-90 hover:ring-gray-300"
+                      }`}
+                    >
+                      <span className="text-3xl">{visual.emoji}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              );
+            })()}
           </motion.div>
 
           {/* Right column - Info */}

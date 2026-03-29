@@ -66,7 +66,7 @@ const config: Config = {
         destructive: "var(--destructive)",
       },
       fontFamily: {
-        sans: ["Inter", "Pretendard", "sans-serif"],
+        sans: ["var(--font-sans)", "var(--font-kr)", "sans-serif"],
       },
       maxWidth: {
         layout: "1280px",

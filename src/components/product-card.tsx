@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { Package, ShoppingBag, Check } from "lucide-react";
+import { ShoppingBag, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import type { Product } from "@/types";
 import { useCartStore } from "@/store/cart-store";
+import { getCategoryVisual } from "@/lib/product-visuals";
 
 interface ProductCardProps {
   product: Product;
@@ -14,6 +15,7 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((s) => s.addItem);
   const [added, setAdded] = useState(false);
+  const visual = getCategoryVisual(product.category);
 
   const handleAdd = () => {
     addItem(product, 1);
@@ -29,18 +31,12 @@ export function ProductCard({ product }: ProductCardProps) {
     >
       {/* Image */}
       <Link href={`/products/${product.id}`} className="relative overflow-hidden">
-        <div className="flex h-[200px] items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 transition-transform duration-500 group-hover:scale-105">
-          {product.image_url ? (
-            <img
-              src={product.image_url}
-              alt={product.name}
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <Package size={40} className="text-gray-300" />
-          )}
+        <div className={`flex h-[200px] items-center justify-center bg-gradient-to-br ${visual.gradient} transition-transform duration-500 group-hover:scale-105`}>
+          <span className="text-6xl drop-shadow-sm transition-transform duration-500 group-hover:scale-110">
+            {visual.emoji}
+          </span>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </Link>
 
       {/* Body */}
@@ -50,20 +46,18 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.category}
         </span>
 
-        {/* Product name */}
+        {/* Product name - fixed 2-line height */}
         <Link href={`/products/${product.id}`}>
           <h3 className="line-clamp-2 h-[2.6rem] text-[15px] font-semibold leading-snug text-gray-900 transition-colors group-hover:text-primary-700">
             {product.name}
           </h3>
         </Link>
 
-        {/* Price area */}
-        <div className="mt-auto flex flex-col gap-0.5 pt-1">
-          {product.price_per_unit !== product.price_per_box && (
-            <span className="text-xs text-gray-400 line-through">
-              {product.price_per_unit.toLocaleString()}원
-            </span>
-          )}
+        {/* Price area - fixed height */}
+        <div className="mt-auto flex h-[3.2rem] flex-col justify-end gap-0.5 pt-1">
+          <span className={`text-xs ${product.price_per_unit !== product.price_per_box ? "text-gray-400 line-through" : "invisible"}`}>
+            {product.price_per_unit.toLocaleString()}원
+          </span>
           <span className="text-lg font-bold text-primary-700">
             {product.price_per_box.toLocaleString()}
             <span className="text-sm font-medium text-gray-500">원</span>

@@ -6,6 +6,7 @@ import { Minus, Plus, X, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/header";
 import { useCartStore } from "@/store/cart-store";
+import { getCategoryVisual } from "@/lib/product-visuals";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -84,13 +85,14 @@ export default function CartPage() {
                     className="rounded-2xl bg-white p-5 shadow-sm border border-gray-100 flex items-start gap-5 transition-shadow duration-200 hover:shadow-md"
                   >
                     {/* Product image */}
-                    <div className="w-20 h-20 rounded-xl bg-gray-50 overflow-hidden flex-shrink-0">
-                      <img
-                        src={item.product.image_url}
-                        alt={item.product.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+                    {(() => {
+                      const v = getCategoryVisual(item.product.category);
+                      return (
+                        <div className={`flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${v.gradient}`}>
+                          <span className="text-3xl">{v.emoji}</span>
+                        </div>
+                      );
+                    })()}
 
                     {/* Product info */}
                     <div className="flex-1 min-w-0">
