@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Truck } from "lucide-react";
 import { Header } from "@/components/header";
 import { useCartStore } from "@/store/cart-store";
+import { useCreateOrder } from "@/lib/queries";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -12,13 +13,34 @@ export default function CheckoutPage() {
   const totalAmount = useCartStore((s) => s.totalAmount);
   const clear = useCartStore((s) => s.clear);
 
+  const orderMutation = useCreateOrder();
+
   const [paymentMethod, setPaymentMethod] = useState<string>("card");
   const [agreed, setAgreed] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (!agreed) return;
-    clear();
-    router.push("/orders");
+    setError(null);
+    try {
+      await orderMutation.mutateAsync({
+        items: items.map((item) => ({
+          product_id: item.product.id,
+          quantity: item.quantity,
+        })),
+        delivery_address: "서울특별시 마포구 합정동 123-45",
+        delivery_date: "2026-04-05",
+        is_cold: false,
+      });
+      clear();
+      router.push("/orders");
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "주문 처리 중 오류가 발생했습니다. 다시 시도해주세요."
+      );
+    }
   };
 
   return (
@@ -134,7 +156,7 @@ export default function CheckoutPage() {
                       {item.product.name} x {item.quantity}
                     </span>
                     <span className="text-gray-900 whitespace-nowrap">
-                      {(item.product.price * item.quantity).toLocaleString()}원
+                      {(item.product.price_per_box * item.quantity).toLocaleString()}원
                     </span>
                   </div>
                 ))}
@@ -153,11 +175,19 @@ export default function CheckoutPage() {
 
               <button
                 onClick={handleCheckout}
-                disabled={!agreed}
+                disabled={!agreed || orderMutation.isPending}
                 className="w-full h-12 rounded-lg bg-primary-700 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {totalAmount().toLocaleString()}원 결제하기
+                {orderMutation.isPending
+                  ? "주문 처리 중..."
+                  : `${totalAmount().toLocaleString()}원 결제하기`}
               </button>
+
+              {error && (
+                <p className="mt-3 text-sm text-red-600 text-center">
+                  {error}
+                </p>
+              )}
             </div>
           </div>
         </div>

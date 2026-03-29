@@ -4,10 +4,47 @@ import { useState } from "react";
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
 import { Header } from "@/components/header";
-import { dummySubscriptions } from "@/lib/dummy-data";
+import type { SubscriptionItem } from "@/types";
+
+const initialSubscriptions: SubscriptionItem[] = [
+  {
+    id: "sub-1",
+    product: {
+      id: "1",
+      name: "일회용 종이컵 6.5oz 1000개입",
+      category: "소모품",
+      price_per_unit: 27.5,
+      price_per_box: 27500,
+      moq: 1,
+      image_url: "",
+      created_at: "2025-03-20",
+    },
+    cycle: "월 1회",
+    quantity: 1,
+    next_delivery: "2025년 4월 5일 (목)",
+    active: true,
+  },
+  {
+    id: "sub-2",
+    product: {
+      id: "2",
+      name: "업소용 위생장갑 (L) 100매",
+      category: "소모품",
+      price_per_unit: 42,
+      price_per_box: 4200,
+      moq: 1,
+      image_url: "",
+      created_at: "2025-03-18",
+    },
+    cycle: "월 1회",
+    quantity: 1,
+    next_delivery: "2025년 4월 12일 (목)",
+    active: false,
+  },
+];
 
 export default function SubscriptionPage() {
-  const [subscriptions, setSubscriptions] = useState(dummySubscriptions);
+  const [subscriptions, setSubscriptions] = useState(initialSubscriptions);
 
   const toggleSubscription = (id: string) => {
     setSubscriptions((prev) =>

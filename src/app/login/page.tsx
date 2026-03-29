@@ -4,18 +4,19 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuthStore } from "@/store/auth-store";
-import { dummyUser } from "@/lib/dummy-data";
+import { useLogin } from "@/lib/queries";
 
 export default function LoginPage() {
   const router = useRouter();
-  const login = useAuthStore((s) => s.login);
+  const authStore = useAuthStore();
+  const loginMutation = useLogin();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -24,8 +25,14 @@ export default function LoginPage() {
       return;
     }
 
-    login("dummy-jwt-token", dummyUser);
-    router.push("/");
+    try {
+      const data = await loginMutation.mutateAsync({ email, password });
+      authStore.login(data.data.access_token, data.data.user);
+      router.push("/");
+    } catch (err: unknown) {
+      const axiosError = err as { response?: { data?: { message?: string } } };
+      setError(axiosError.response?.data?.message || "로그인에 실패했습니다.");
+    }
   };
 
   return (
@@ -129,9 +136,10 @@ export default function LoginPage() {
           {/* Login button */}
           <button
             type="submit"
-            className="w-full h-12 bg-primary-700 text-white font-medium rounded-lg hover:opacity-90 transition-opacity"
+            disabled={loginMutation.isPending}
+            className="w-full h-12 bg-primary-700 text-white font-medium rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            로그인
+            {loginMutation.isPending ? "로그인 중..." : "로그인"}
           </button>
         </form>
 

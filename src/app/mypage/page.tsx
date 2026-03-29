@@ -2,19 +2,35 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { User, Package, Calendar, LogOut, Mail } from "lucide-react";
+import { User, Package, Calendar, LogOut, Mail, Loader2 } from "lucide-react";
 import { Header } from "@/components/header";
 import { useAuthStore } from "@/store/auth-store";
-import { dummyUser } from "@/lib/dummy-data";
+import { useMe, useLogout } from "@/lib/queries";
 
 export default function MyPage() {
   const router = useRouter();
   const authStore = useAuthStore();
+  const { data: meData, isLoading } = useMe();
+  const logoutMutation = useLogout();
 
-  const handleLogout = () => {
+  const user = meData?.data;
+
+  const handleLogout = async () => {
+    await logoutMutation.mutateAsync();
     authStore.logout();
     router.push("/login");
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center py-32">
+          <Loader2 className="h-8 w-8 animate-spin text-primary-500" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -27,17 +43,17 @@ export default function MyPage() {
             {/* Avatar */}
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary-700">
               <span className="text-xl font-bold text-white">
-                {dummyUser.owner_name.charAt(0)}
+                {user?.owner_name?.charAt(0) ?? ""}
               </span>
             </div>
 
             {/* Name */}
             <div className="flex flex-col items-center gap-1">
               <span className="text-lg font-bold text-gray-900">
-                {dummyUser.owner_name}
+                {user?.owner_name}
               </span>
               <span className="text-sm text-gray-500">
-                {dummyUser.business_type}
+                {user?.business_type}
               </span>
             </div>
 
@@ -86,7 +102,7 @@ export default function MyPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-sm text-gray-900">
                   <Mail size={16} className="text-gray-500" />
-                  {dummyUser.email}
+                  {user?.email}
                 </div>
                 <button className="text-sm text-primary-500 hover:underline">
                   사업자 변경
@@ -110,25 +126,25 @@ export default function MyPage() {
                     사업자등록번호
                   </span>
                   <span className="text-sm text-gray-900">
-                    {dummyUser.business_number}
+                    {user?.business_number}
                   </span>
                 </div>
                 <div className="flex items-center">
                   <span className="w-32 text-sm text-gray-500">업종</span>
                   <span className="text-sm text-gray-900">
-                    {dummyUser.business_type}
+                    {user?.business_type}
                   </span>
                 </div>
                 <div className="flex items-center">
                   <span className="w-32 text-sm text-gray-500">상호명</span>
                   <span className="text-sm text-gray-900">
-                    {dummyUser.company_name}
+                    {user?.company_name}
                   </span>
                 </div>
                 <div className="flex items-center">
                   <span className="w-32 text-sm text-gray-500">대표자명</span>
                   <span className="text-sm text-gray-900">
-                    {dummyUser.owner_name}
+                    {user?.owner_name}
                   </span>
                 </div>
               </div>
@@ -141,7 +157,7 @@ export default function MyPage() {
             <div className="rounded-lg border border-gray-200 bg-white p-6">
               <div className="flex flex-col gap-3">
                 <span className="inline-flex w-fit rounded-full bg-info-light px-3 py-1 text-sm font-semibold text-primary-500">
-                  일반회원
+                  {user?.grade ?? "일반회원"}
                 </span>
                 <p className="text-sm text-gray-500">
                   누적 구매금액 30만원 이상 시 프리미엄 회원으로 등급

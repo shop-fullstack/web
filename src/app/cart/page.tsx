@@ -63,8 +63,8 @@ export default function CartPage() {
                       </span>
                     </div>
                     <p className="text-sm text-gray-500">
-                      개당 {item.product.unit_price.toLocaleString()}원 /{" "}
-                      {item.product.unit} {item.product.price.toLocaleString()}원
+                      개당 {item.product.price_per_unit.toLocaleString()}원 / 박스{" "}
+                      {item.product.price_per_box.toLocaleString()}원
                     </p>
 
                     {/* Quantity controls */}
@@ -106,7 +106,7 @@ export default function CartPage() {
                       <X size={18} />
                     </button>
                     <span className="text-[16px] font-bold text-gray-900 whitespace-nowrap">
-                      {(item.product.price * item.quantity).toLocaleString()}원
+                      {(item.product.price_per_box * item.quantity).toLocaleString()}원
                     </span>
                   </div>
                 </div>

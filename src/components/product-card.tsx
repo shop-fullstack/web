@@ -45,11 +45,13 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Price area */}
         <div className="mt-auto flex flex-col gap-0.5">
-          <span className="text-sm text-gray-500 line-through">
-            {product.unit_price.toLocaleString()}원
-          </span>
+          {product.price_per_unit !== product.price_per_box && (
+            <span className="text-sm text-gray-500 line-through">
+              {product.price_per_unit.toLocaleString()}원
+            </span>
+          )}
           <span className="font-bold text-primary-700">
-            {product.unit} {product.price.toLocaleString()}원
+            박스 {product.price_per_box.toLocaleString()}원
           </span>
         </div>
 

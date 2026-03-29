@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle, Circle, Package, Truck } from "lucide-react";
 import { Header } from "@/components/header";
-import { dummyOrders } from "@/lib/dummy-data";
+import { useOrder } from "@/lib/queries";
 import type { Order } from "@/types";
 
 const DELIVERY_STEPS = ["주문완료", "배송준비", "배송중", "배송완료"] as const;
@@ -38,7 +38,21 @@ function formatLongDate(dateStr: string) {
 export default function OrderDetailPage() {
   const params = useParams();
   const orderId = params.id as string;
-  const order = dummyOrders.find((o) => o.id === orderId);
+  const { data, isLoading } = useOrder(orderId);
+  const order = data?.data;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="mx-auto max-w-layout px-20 py-8">
+          <p className="py-16 text-center text-gray-500">
+            주문 정보를 불러오는 중...
+          </p>
+        </main>
+      </div>
+    );
+  }
 
   if (!order) {
     return (
@@ -67,8 +81,8 @@ export default function OrderDetailPage() {
   const totalQuantityLabel = order.items.reduce((sum, item) => sum + item.quantity, 0) + "박스";
   const productName =
     order.items.length === 1
-      ? order.items[0].product_name
-      : `${order.items[0].product_name} 외 ${order.items.length - 1}건`;
+      ? order.items[0].name
+      : `${order.items[0].name} 외 ${order.items.length - 1}건`;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -86,7 +100,7 @@ export default function OrderDetailPage() {
         {/* Title */}
         <h1 className="text-2xl font-bold text-gray-900">배송 조회</h1>
         <p className="mt-1 text-sm text-gray-500">
-          주문번호 {order.order_number}
+          주문번호 {order.id}
         </p>
 
         {/* Order Summary Card */}
@@ -180,19 +194,19 @@ export default function OrderDetailPage() {
             <div className="flex items-center gap-4">
               <span className="w-24 text-sm text-gray-500">택배사</span>
               <span className="text-sm font-medium text-gray-900">
-                {order.courier ?? "CJ대한통운"}
+                CJ대한통운
               </span>
             </div>
             <div className="flex items-center gap-4">
               <span className="w-24 text-sm text-gray-500">운송장번호</span>
               <span className="text-sm font-medium text-gray-900">
-                {order.tracking_number ?? "-"}
+                -
               </span>
             </div>
             <div className="flex items-center gap-4">
               <span className="w-24 text-sm text-gray-500">예상 배송일</span>
               <span className="text-sm font-medium text-gray-900">
-                {order.estimated_delivery ?? "-"}
+                {order.delivery_date ? formatLongDate(order.delivery_date) : "-"}
               </span>
             </div>
           </div>

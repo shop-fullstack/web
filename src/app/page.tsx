@@ -4,20 +4,48 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Header } from "@/components/header";
 import { ProductCard } from "@/components/product-card";
-import { dummyProducts, categories } from "@/lib/dummy-data";
+import { useProducts, useTrendReport } from "@/lib/queries";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
 };
 
-const trendItems = [
-  { name: "일회용 종이컵 1000개입", change: 32 },
-  { name: "업소용 위생장갑 (L) 100매", change: 29 },
-  { name: "아메리카노 원두 1kg", change: 21 },
+const categories = [
+  { label: "식자재", icon: "🍳" },
+  { label: "소모품", icon: "🧴" },
+  { label: "포장재", icon: "📦" },
+  { label: "뷰티용품", icon: "💄" },
+  { label: "인테리어", icon: "🪑" },
+  { label: "기타", icon: "📋" },
 ];
 
+function getChangeIndicator(change: "up" | "down" | "same" | "new") {
+  switch (change) {
+    case "up":
+      return { label: "▲", className: "text-success" };
+    case "down":
+      return { label: "▼", className: "text-red-500" };
+    case "same":
+      return { label: "—", className: "text-gray-400" };
+    case "new":
+      return { label: "NEW", className: "text-primary-500 font-bold" };
+  }
+}
+
 export default function Home() {
+  const { data: productsData, isLoading: productsLoading } = useProducts({
+    sort: "popular",
+    limit: 4,
+  });
+  const { data: trendData, isLoading: trendLoading } = useTrendReport(
+    "weekly",
+    3,
+  );
+
+  const products = productsData?.data?.items || [];
+  const trendRanking = trendData?.data?.ranking || [];
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -75,19 +103,33 @@ export default function Home() {
           이번 주 트렌드
         </h2>
         <div className="grid grid-cols-3 gap-4">
-          {trendItems.map((item) => (
-            <div
-              key={item.name}
-              className="flex items-center justify-between rounded-lg bg-white p-4"
-            >
-              <span className="text-sm font-medium text-gray-900">
-                {item.name}
-              </span>
-              <span className="text-sm font-semibold text-success">
-                ▲ {item.change}%
-              </span>
-            </div>
-          ))}
+          {trendLoading
+            ? Array.from({ length: 3 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="flex animate-pulse items-center justify-between rounded-lg bg-white p-4"
+                >
+                  <div className="h-4 w-40 rounded bg-gray-200" />
+                  <div className="h-4 w-16 rounded bg-gray-200" />
+                </div>
+              ))
+            : trendRanking.map((item) => {
+                const indicator = getChangeIndicator(item.change);
+                return (
+                  <div
+                    key={item.product_id}
+                    className="flex items-center justify-between rounded-lg bg-white p-4"
+                  >
+                    <span className="text-sm font-medium text-gray-900">
+                      {item.name}
+                    </span>
+                    <span className={`text-sm font-semibold ${indicator.className}`}>
+                      {indicator.label}{" "}
+                      {item.order_count.toLocaleString()}건
+                    </span>
+                  </div>
+                );
+              })}
         </div>
       </motion.section>
 
@@ -135,9 +177,20 @@ export default function Home() {
           </Link>
         </div>
         <div className="grid grid-cols-4 gap-4">
-          {dummyProducts.slice(0, 4).map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          {productsLoading
+            ? Array.from({ length: 4 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="animate-pulse rounded-lg border border-gray-200 bg-white p-4"
+                >
+                  <div className="mb-3 h-40 w-full rounded bg-gray-200" />
+                  <div className="mb-2 h-4 w-3/4 rounded bg-gray-200" />
+                  <div className="h-4 w-1/2 rounded bg-gray-200" />
+                </div>
+              ))
+            : products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
         </div>
       </motion.section>
     </div>

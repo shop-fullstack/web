@@ -1,85 +1,69 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { Header } from "@/components/header";
 import { ProductCard } from "@/components/product-card";
-import { dummyProducts } from "@/lib/dummy-data";
+import { useProducts } from "@/lib/queries";
 
 const CATEGORIES = ["소모품", "식자재", "포장재", "뷰티용품", "인테리어", "기타"];
 const SORT_OPTIONS = [
   { value: "popular", label: "인기순" },
-  { value: "price-asc", label: "가격 낮은순" },
-  { value: "price-desc", label: "가격 높은순" },
-  { value: "newest", label: "최신순" },
+  { value: "price_asc", label: "가격 낮은순" },
+  { value: "price_desc", label: "가격 높은순" },
+  { value: "latest", label: "최신순" },
 ];
 
-export default function ProductsPage() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  const [sortBy, setSortBy] = useState("popular");
+const LIMIT = 20;
 
-  const toggleCategory = (category: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
+export default function ProductsPage() {
+  const [searchInput, setSearchInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
+    undefined
+  );
+  const [sortBy, setSortBy] = useState("popular");
+  const [page, setPage] = useState(1);
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchQuery(searchInput);
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [selectedCategory, sortBy]);
+
+  const { data, isLoading, isError } = useProducts({
+    category: selectedCategory,
+    sort: sortBy,
+    search: searchQuery || undefined,
+    page,
+    limit: LIMIT,
+  });
+
+  const products = data?.data?.items || [];
+  const total = data?.data?.total || 0;
+  const totalPages = Math.ceil(total / LIMIT);
+
+  const selectCategory = (category: string) => {
+    setSelectedCategory((prev) =>
+      prev === category ? undefined : category
     );
   };
 
   const resetFilters = () => {
-    setSelectedCategories([]);
-    setMinPrice("");
-    setMaxPrice("");
+    setSelectedCategory(undefined);
+    setSearchInput("");
     setSearchQuery("");
+    setSortBy("popular");
+    setPage(1);
   };
-
-  const filteredProducts = useMemo(() => {
-    let result = [...dummyProducts];
-
-    // Search filter
-    if (searchQuery.trim()) {
-      result = result.filter((p) =>
-        p.name.toLowerCase().includes(searchQuery.trim().toLowerCase())
-      );
-    }
-
-    // Category filter
-    if (selectedCategories.length > 0) {
-      result = result.filter((p) => selectedCategories.includes(p.category));
-    }
-
-    // Price filter
-    if (minPrice) {
-      result = result.filter((p) => p.price >= Number(minPrice));
-    }
-    if (maxPrice) {
-      result = result.filter((p) => p.price <= Number(maxPrice));
-    }
-
-    // Sort
-    switch (sortBy) {
-      case "price-asc":
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case "price-desc":
-        result.sort((a, b) => b.price - a.price);
-        break;
-      case "newest":
-        result.sort(
-          (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        );
-        break;
-      default:
-        // "popular" - keep original order
-        break;
-    }
-
-    return result;
-  }, [searchQuery, selectedCategories, minPrice, maxPrice, sortBy]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -109,36 +93,15 @@ export default function ProductsPage() {
                   className="flex cursor-pointer items-center gap-2 text-sm text-gray-900"
                 >
                   <input
-                    type="checkbox"
-                    checked={selectedCategories.includes(category)}
-                    onChange={() => toggleCategory(category)}
-                    className="h-4 w-4 rounded border-gray-200 text-primary-700 accent-primary-700"
+                    type="radio"
+                    name="category"
+                    checked={selectedCategory === category}
+                    onChange={() => selectCategory(category)}
+                    className="h-4 w-4 border-gray-200 text-primary-700 accent-primary-700"
                   />
                   {category}
                 </label>
               ))}
-            </div>
-          </div>
-
-          {/* Price range filter */}
-          <div className="mt-6">
-            <h3 className="mb-3 text-sm font-semibold text-gray-900">가격대</h3>
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                placeholder="최소"
-                value={minPrice}
-                onChange={(e) => setMinPrice(e.target.value)}
-                className="h-9 w-full rounded-lg border border-gray-200 px-3 text-sm text-gray-900 placeholder:text-gray-500 focus:border-primary-700 focus:outline-none focus:ring-1 focus:ring-primary-700"
-              />
-              <span className="text-gray-500">~</span>
-              <input
-                type="number"
-                placeholder="최대"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(e.target.value)}
-                className="h-9 w-full rounded-lg border border-gray-200 px-3 text-sm text-gray-900 placeholder:text-gray-500 focus:border-primary-700 focus:outline-none focus:ring-1 focus:ring-primary-700"
-              />
             </div>
           </div>
         </aside>
@@ -155,8 +118,8 @@ export default function ProductsPage() {
               <input
                 type="text"
                 placeholder="상품명을 검색하세요"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
                 className="h-11 w-full rounded-lg border border-gray-200 pl-10 pr-4 text-sm text-gray-900 placeholder:text-gray-500 focus:border-primary-700 focus:outline-none focus:ring-1 focus:ring-primary-700"
               />
             </div>
@@ -175,21 +138,115 @@ export default function ProductsPage() {
 
           {/* Result count */}
           <p className="mt-4 text-sm text-gray-500">
-            총 {filteredProducts.length}건의 상품
+            총 {total}건의 상품
           </p>
 
-          {/* Product grid */}
-          <div className="mt-4 grid grid-cols-4 gap-4">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-
-          {filteredProducts.length === 0 && (
-            <div className="mt-16 flex flex-col items-center justify-center text-gray-500">
-              <p className="text-lg font-medium">검색 결과가 없습니다</p>
-              <p className="mt-1 text-sm">다른 검색어나 필터를 시도해보세요</p>
+          {/* Loading state */}
+          {isLoading && (
+            <div className="mt-4 grid grid-cols-4 gap-4">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm"
+                >
+                  <div className="h-[200px] animate-pulse bg-gray-200" />
+                  <div className="flex flex-col gap-2 p-4">
+                    <div className="h-4 w-16 animate-pulse rounded bg-gray-200" />
+                    <div className="h-5 w-full animate-pulse rounded bg-gray-200" />
+                    <div className="h-4 w-24 animate-pulse rounded bg-gray-200" />
+                    <div className="h-10 w-full animate-pulse rounded-lg bg-gray-200" />
+                  </div>
+                </div>
+              ))}
             </div>
+          )}
+
+          {/* Error state */}
+          {isError && (
+            <div className="mt-16 flex flex-col items-center justify-center text-gray-500">
+              <p className="text-lg font-medium">상품을 불러오지 못했습니다</p>
+              <p className="mt-1 text-sm">잠시 후 다시 시도해주세요</p>
+            </div>
+          )}
+
+          {/* Product grid */}
+          {!isLoading && !isError && (
+            <>
+              <div className="mt-4 grid grid-cols-4 gap-4">
+                {products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+
+              {products.length === 0 && (
+                <div className="mt-16 flex flex-col items-center justify-center text-gray-500">
+                  <p className="text-lg font-medium">검색 결과가 없습니다</p>
+                  <p className="mt-1 text-sm">다른 검색어나 필터를 시도해보세요</p>
+                </div>
+              )}
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="mt-8 flex items-center justify-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={page <= 1}
+                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-sm text-gray-500 hover:bg-gray-100 disabled:opacity-40"
+                  >
+                    &lt;
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1)
+                    .filter((p) => {
+                      // Show first, last, and pages near current
+                      if (p === 1 || p === totalPages) return true;
+                      if (Math.abs(p - page) <= 2) return true;
+                      return false;
+                    })
+                    .reduce<(number | "ellipsis")[]>((acc, p, idx, arr) => {
+                      if (idx > 0) {
+                        const prev = arr[idx - 1];
+                        if (p - prev > 1) {
+                          acc.push("ellipsis");
+                        }
+                      }
+                      acc.push(p);
+                      return acc;
+                    }, [])
+                    .map((item, idx) =>
+                      item === "ellipsis" ? (
+                        <span
+                          key={`ellipsis-${idx}`}
+                          className="flex h-9 w-9 items-center justify-center text-sm text-gray-400"
+                        >
+                          ...
+                        </span>
+                      ) : (
+                        <button
+                          key={item}
+                          type="button"
+                          onClick={() => setPage(item)}
+                          className={`flex h-9 w-9 items-center justify-center rounded-lg border text-sm ${
+                            page === item
+                              ? "border-primary-700 bg-primary-700 text-white"
+                              : "border-gray-200 text-gray-500 hover:bg-gray-100"
+                          }`}
+                        >
+                          {item}
+                        </button>
+                      )
+                    )}
+                  <button
+                    type="button"
+                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={page >= totalPages}
+                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-sm text-gray-500 hover:bg-gray-100 disabled:opacity-40"
+                  >
+                    &gt;
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </main>
       </div>

@@ -4,11 +4,20 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuthStore } from "@/store/auth-store";
-import { dummyUser, businessTypes } from "@/lib/dummy-data";
+import { useRegister } from "@/lib/queries";
+
+const businessTypes = [
+  "카페/베이커리",
+  "식당/외식업",
+  "미용실/뷰티",
+  "편의점/소매업",
+  "네일샵/피부샵",
+];
 
 export default function RegisterPage() {
   const router = useRouter();
-  const login = useAuthStore((s) => s.login);
+  const authStore = useAuthStore();
+  const registerMutation = useRegister();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +30,7 @@ export default function RegisterPage() {
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -40,8 +49,21 @@ export default function RegisterPage() {
       return;
     }
 
-    login("dummy-jwt-token", dummyUser);
-    router.push("/");
+    try {
+      const data = await registerMutation.mutateAsync({
+        email,
+        password,
+        business_number: businessNumber,
+        business_type: businessType,
+        company_name: companyName,
+        owner_name: ownerName,
+      });
+      authStore.login(data.data.access_token, data.data.user);
+      router.push("/");
+    } catch (err: unknown) {
+      const axiosError = err as { response?: { data?: { message?: string } } };
+      setError(axiosError.response?.data?.message || "회원가입에 실패했습니다.");
+    }
   };
 
   return (
@@ -232,9 +254,10 @@ export default function RegisterPage() {
           {/* Register button */}
           <button
             type="submit"
-            className="w-full h-12 bg-primary-700 text-white font-medium rounded-lg hover:opacity-90 transition-opacity"
+            disabled={registerMutation.isPending}
+            className="w-full h-12 bg-primary-700 text-white font-medium rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            회원가입
+            {registerMutation.isPending ? "가입 처리 중..." : "회원가입"}
           </button>
         </form>
 
