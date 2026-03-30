@@ -104,3 +104,58 @@ export interface CreateOrderResponse {
   total_amount: number;
   status: string;
 }
+
+// === Phase 3: 개인화 추천 ===
+export interface RecommendationItem {
+  product: Product;
+  reason: string;
+  score: number;
+  reason_type: "business_type" | "order_history" | "trending" | "similar";
+}
+
+export interface RecommendationResponse {
+  user_business_type: string;
+  items: RecommendationItem[];
+  generated_at: string;
+}
+
+// === Phase 3: 수요 예측 ===
+export interface ForecastDataPoint {
+  week_label: string;
+  predicted_orders: number;
+  confidence_low: number;
+  confidence_high: number;
+}
+
+export interface ProductForecast {
+  product_id: string;
+  product_name: string;
+  category: string;
+  current_weekly_avg: number;
+  forecast: ForecastDataPoint[];
+  trend: "rising" | "stable" | "declining";
+  change_percent: number;
+}
+
+export interface ForecastResponse {
+  business_type: string;
+  period: string;
+  forecasts: ProductForecast[];
+  generated_at: string;
+}
+
+// === Phase 3: AI 챗봇 ===
+export interface ChatMessage {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+  timestamp: string;
+  products?: Product[];
+  action?: ChatAction;
+}
+
+export interface ChatAction {
+  type: "view_product" | "add_to_cart" | "view_order" | "view_trend";
+  label: string;
+  payload: string;
+}

@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/lib/query-provider";
 import { AuthHydrator } from "@/components/auth-hydrator";
+import { ChatWidget } from "@/components/chatbot/chat-widget";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -31,7 +32,10 @@ export default function RootLayout({
     <html lang="ko" className={`${jakarta.variable} ${notoSansKR.variable}`}>
       <body className="font-sans antialiased">
         <QueryProvider>
-          <AuthHydrator>{children}</AuthHydrator>
+          <AuthHydrator>
+            {children}
+            <ChatWidget />
+          </AuthHydrator>
         </QueryProvider>
       </body>
     </html>

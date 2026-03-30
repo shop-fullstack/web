@@ -11,6 +11,8 @@ import type {
   User,
   CreateOrderRequest,
   CreateOrderResponse,
+  RecommendationResponse,
+  ForecastResponse,
 } from "@/types";
 
 // Auth
@@ -125,5 +127,51 @@ export function useBestSellers(type: string, limit?: number) {
         params: { type, ...(limit ? { limit } : {}) },
       }) as Promise<ApiResponse<BestSellerReport>>,
     enabled: !!type,
+  });
+}
+
+// Recommendations
+export function useRecommendations(businessType: string) {
+  return useQuery({
+    queryKey: ["recommendations", businessType],
+    queryFn: async () => {
+      try {
+        return (await api.get("/recommend", {
+          params: { business_type: businessType },
+        })) as ApiResponse<RecommendationResponse>;
+      } catch {
+        const { generateMockRecommendations } = await import("./mock/recommend");
+        return {
+          statusCode: 200,
+          message: "mock",
+          data: generateMockRecommendations(businessType),
+        } as ApiResponse<RecommendationResponse>;
+      }
+    },
+    enabled: !!businessType,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+// Forecast
+export function useForecast(businessType: string) {
+  return useQuery({
+    queryKey: ["forecast", businessType],
+    queryFn: async () => {
+      try {
+        return (await api.get("/forecast", {
+          params: { business_type: businessType },
+        })) as ApiResponse<ForecastResponse>;
+      } catch {
+        const { generateMockForecast } = await import("./mock/forecast");
+        return {
+          statusCode: 200,
+          message: "mock",
+          data: generateMockForecast(businessType),
+        } as ApiResponse<ForecastResponse>;
+      }
+    },
+    enabled: !!businessType,
+    staleTime: 10 * 60 * 1000,
   });
 }

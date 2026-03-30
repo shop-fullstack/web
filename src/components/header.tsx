@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingCart, Menu, X } from "lucide-react";
+import { ShoppingCart, Menu, X, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuthStore } from "@/store/auth-store";
@@ -26,6 +26,8 @@ export function Header() {
     { href: "/", label: "홈" },
     { href: "/products", label: "상품" },
     { href: "/trend", label: "트렌드" },
+    { href: "/recommend", label: "AI 추천", icon: true },
+    { href: "/forecast", label: "수요예측" },
   ];
 
   return (
@@ -57,7 +59,10 @@ export function Header() {
                   : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
               }`}
             >
-              {item.label}
+              <span className="flex items-center gap-1">
+                {"icon" in item && item.icon && <Sparkles size={12} />}
+                {item.label}
+              </span>
               {pathname === item.href && (
                 <motion.div
                   layoutId="nav-indicator"
