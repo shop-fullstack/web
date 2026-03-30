@@ -12,6 +12,7 @@
 | 4 | [api-usage.md](./api-usage.md) | 페이지별 API 호출 명세 |
 | 5 | [planning.md](./planning.md) | 기획서, 로드맵, UI/UX 시스템 |
 | 6 | [changelog.md](./changelog.md) | 버전별 변경 이력 |
+| 7 | [backend-api-requirements.md](./backend-api-requirements.md) | 백엔드 API 전체 명세 (Phase 3 포함) |
 
 ## 페이지별 인수인계 문서 목록
 
