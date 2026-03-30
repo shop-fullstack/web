@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/header";
 import { useOrders } from "@/lib/queries";
-import type { Order } from "@/types";
+import { api } from "@/lib/api";
+import { useCartStore } from "@/store/cart-store";
+import type { Order, ApiResponse, Product } from "@/types";
 
 const STATUS_TABS = ["전체", "주문완료", "배송중", "배송완료"] as const;
 
@@ -46,6 +49,8 @@ const cardVariants = {
 };
 
 export default function OrdersPage() {
+  const router = useRouter();
+  const addItem = useCartStore((s) => s.addItem);
   const [activeTab, setActiveTab] = useState<string>("전체");
 
   const statusParam = activeTab === "전체" ? "all" : activeTab;
@@ -182,7 +187,23 @@ export default function OrdersPage() {
                       배송 조회
                     </Link>
                     <button
-                      onClick={() => alert("재주문 기능은 준비 중입니다.")}
+                      onClick={async () => {
+                        try {
+                          const results = await Promise.all(
+                            order.items.map((item) =>
+                              api.get(`/products/${item.product_id}`) as Promise<ApiResponse<Product>>
+                            )
+                          );
+                          results.forEach((res, i) => {
+                            if (res.data) {
+                              addItem(res.data, order.items[i].quantity);
+                            }
+                          });
+                          router.push("/cart");
+                        } catch {
+                          alert("일부 상품을 불러올 수 없습니다. 다시 시도해주세요.");
+                        }
+                      }}
                       className="rounded-xl bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-700 transition-all duration-200 hover:bg-primary-700 hover:text-white hover:shadow-md hover:shadow-primary-700/20"
                     >
                       재주문

@@ -5,9 +5,12 @@
 소상공인 대상 AI 트렌드 인사이트 종합 도매 플랫폼
 
 ## 문서 참조
-- 기획 및 기능 명세 → `PLANNING.md`
-- 변경 이력 → `CHANGELOG.md`
-- 페이지별 API 사용 명세 → `API_USAGE.md`
+- 전체 문서 목차 → `docs/README.md`
+- 프로젝트 구조 → `docs/architecture.md`
+- 기획 및 기능 명세 → `docs/planning.md`
+- 변경 이력 → `docs/changelog.md`
+- 페이지별 API 사용 명세 → `docs/api-usage.md`
+- 페이지별 인수인계 → `docs/pages/`
 
 ## 기술 스택
 - Framework: Next.js 14 (App Router)
@@ -16,7 +19,7 @@
 - Animation: Framer Motion
 - State: Zustand (클라이언트), TanStack Query (서버)
 - Auth: 이메일 + 비밀번호 (JWT)
-- DB Client: Supabase JS SDK
+- HTTP Client: Axios (REST API)
 - 결제: Mock 결제 (즉시 완료 처리)
 
 ## 코드 스타일
@@ -32,7 +35,7 @@
 src/
 ├── app/          # Next.js App Router 페이지
 ├── components/   # 재사용 컴포넌트
-├── lib/          # supabase 클라이언트, auth 유틸
+├── lib/          # API 클라이언트, auth 유틸, queries
 ├── store/        # Zustand 스토어
 └── types/        # 공통 타입 정의
 ```
@@ -42,7 +45,7 @@ src/
 - 환경변수는 반드시 `.env.local` 사용, 코드에 하드코딩 금지
 - 결제는 Mock 처리 — 실제 PG 연동 없음
 - API 호출은 TanStack Query로 처리
-- 에러 바운더리 필수 적용
+- 에러 바운더리 필수 적용 (src/app/error.tsx)
 
 ## 워크플로우
 - 타입 체크: `npx tsc --noEmit`

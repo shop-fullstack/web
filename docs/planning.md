@@ -52,7 +52,7 @@
 | 10% | Accent | `#2563EB` | 호버, 뱃지, 포인트 |
 
 ### 폰트
-- Inter (+ Pretendard 한국어 폴백)
+- Plus Jakarta Sans (+ Noto Sans KR 한국어)
 
 ### 레이아웃
 - 최대 너비: 1280px

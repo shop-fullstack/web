@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Minus, Plus, ChevronRight, ShoppingBag, Zap, Package } from "lucide-react";
-import { motion } from "framer-motion";
+import { Minus, Plus, ChevronRight, ShoppingBag, Zap, Package, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/header";
 import { useProduct } from "@/lib/queries";
 import { useCartStore } from "@/store/cart-store";
@@ -18,6 +18,7 @@ export default function ProductDetailPage({
   const router = useRouter();
   const addItem = useCartStore((s) => s.addItem);
   const [quantity, setQuantity] = useState(1);
+  const [added, setAdded] = useState(false);
 
   const { data, isLoading, isError } = useProduct(params.id);
   const product = data?.data;
@@ -119,6 +120,8 @@ export default function ProductDetailPage({
 
   const handleAddToCart = () => {
     addItem(product, quantity);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
   };
 
   const handleBuyNow = () => {
@@ -283,10 +286,37 @@ export default function ProductDetailPage({
                 onClick={handleAddToCart}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex h-14 flex-1 items-center justify-center gap-2 rounded-2xl border-2 border-primary-200 bg-white text-sm font-semibold text-primary-700 transition-all duration-200 hover:border-primary-300 hover:bg-primary-50 hover:shadow-md"
+                className={`flex h-14 flex-1 items-center justify-center gap-2 rounded-2xl border-2 text-sm font-semibold transition-all duration-200 ${
+                  added
+                    ? "border-emerald-300 bg-emerald-50 text-emerald-600"
+                    : "border-primary-200 bg-white text-primary-700 hover:border-primary-300 hover:bg-primary-50 hover:shadow-md"
+                }`}
               >
-                <ShoppingBag size={18} />
-                장바구니 담기
+                <AnimatePresence mode="wait">
+                  {added ? (
+                    <motion.span
+                      key="added"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      className="flex items-center gap-2"
+                    >
+                      <Check size={18} />
+                      담았습니다
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="default"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      className="flex items-center gap-2"
+                    >
+                      <ShoppingBag size={18} />
+                      장바구니 담기
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </motion.button>
               <motion.button
                 type="button"

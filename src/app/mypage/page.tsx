@@ -1,12 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { User, Package, Calendar, LogOut, Mail, Loader2, Shield, ChevronRight } from "lucide-react";
+import { User, Package, Calendar, LogOut, Mail, Loader2, Shield, ChevronRight, Pencil, X, Check } from "lucide-react";
 import { Header } from "@/components/header";
 import { useAuthStore } from "@/store/auth-store";
-import { useMe, useLogout } from "@/lib/queries";
+import { useMe, useLogout, useUpdateMe } from "@/lib/queries";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -31,10 +32,19 @@ export default function MyPage() {
   const router = useRouter();
   const pathname = usePathname();
   const authStore = useAuthStore();
-  const { data: meData, isLoading } = useMe();
+  const { data: meData, isLoading, refetch } = useMe();
   const logoutMutation = useLogout();
+  const updateMeMutation = useUpdateMe();
 
   const user = meData?.data;
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState({
+    business_number: "",
+    business_type: "",
+    company_name: "",
+    owner_name: "",
+  });
 
   const handleLogout = async () => {
     await logoutMutation.mutateAsync();
@@ -166,27 +176,91 @@ export default function MyPage() {
           <motion.section variants={itemVariants}>
             <div className="mb-3 flex items-center justify-between">
               <h2 className="text-lg font-bold text-gray-900">사업자 정보</h2>
-              <button className="text-sm font-medium text-primary-500 hover:text-primary-700 transition-colors">
-                수정
-              </button>
+              {!isEditing ? (
+                <button
+                  onClick={() => {
+                    setEditForm({
+                      business_number: user?.business_number ?? "",
+                      business_type: user?.business_type ?? "",
+                      company_name: user?.company_name ?? "",
+                      owner_name: user?.owner_name ?? "",
+                    });
+                    setIsEditing(true);
+                  }}
+                  className="flex items-center gap-1 text-sm font-medium text-primary-500 hover:text-primary-700 transition-colors"
+                >
+                  <Pencil size={14} />
+                  수정
+                </button>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setIsEditing(false)}
+                    className="flex items-center gap-1 text-sm font-medium text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <X size={14} />
+                    취소
+                  </button>
+                  <button
+                    onClick={async () => {
+                      await updateMeMutation.mutateAsync(editForm);
+                      authStore.updateUser({ ...user!, ...editForm });
+                      await refetch();
+                      setIsEditing(false);
+                    }}
+                    disabled={updateMeMutation.isPending}
+                    className="flex items-center gap-1 text-sm font-medium text-primary-500 hover:text-primary-700 transition-colors disabled:opacity-50"
+                  >
+                    <Check size={14} />
+                    저장
+                  </button>
+                </div>
+              )}
             </div>
             <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-6">
               <div className="flex flex-col gap-5">
-                {[
-                  { label: "사업자등록번호", value: user?.business_number },
-                  { label: "업종", value: user?.business_type },
-                  { label: "상호명", value: user?.company_name },
-                  { label: "대표자명", value: user?.owner_name },
-                ].map((row) => (
-                  <div key={row.label} className="flex items-center">
-                    <span className="w-32 text-sm text-gray-400 font-medium">
-                      {row.label}
-                    </span>
-                    <span className="text-sm font-medium text-gray-800">
-                      {row.value}
-                    </span>
-                  </div>
-                ))}
+                {isEditing ? (
+                  <>
+                    {[
+                      { label: "사업자등록번호", key: "business_number" as const },
+                      { label: "업종", key: "business_type" as const },
+                      { label: "상호명", key: "company_name" as const },
+                      { label: "대표자명", key: "owner_name" as const },
+                    ].map((row) => (
+                      <div key={row.label} className="flex items-center">
+                        <span className="w-32 text-sm text-gray-400 font-medium">
+                          {row.label}
+                        </span>
+                        <input
+                          type="text"
+                          value={editForm[row.key]}
+                          onChange={(e) =>
+                            setEditForm((prev) => ({ ...prev, [row.key]: e.target.value }))
+                          }
+                          className="flex-1 rounded-lg border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-800 focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
+                        />
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {[
+                      { label: "사업자등록번호", value: user?.business_number },
+                      { label: "업종", value: user?.business_type },
+                      { label: "상호명", value: user?.company_name },
+                      { label: "대표자명", value: user?.owner_name },
+                    ].map((row) => (
+                      <div key={row.label} className="flex items-center">
+                        <span className="w-32 text-sm text-gray-400 font-medium">
+                          {row.label}
+                        </span>
+                        <span className="text-sm font-medium text-gray-800">
+                          {row.value}
+                        </span>
+                      </div>
+                    ))}
+                  </>
+                )}
               </div>
             </div>
           </motion.section>

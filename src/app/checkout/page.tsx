@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Truck, CreditCard, Wallet, Building2, Check, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -36,6 +36,12 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<string>("card");
   const [agreed, setAgreed] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (items.length === 0) {
+      router.replace("/cart");
+    }
+  }, [items.length, router]);
 
   const handleCheckout = async () => {
     if (!agreed) return;

@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, ShoppingCart, Package } from "lucide-react";
+import { Loader2, ShoppingCart, Package, Check } from "lucide-react";
 import { Header } from "@/components/header";
 import { useBestSellers } from "@/lib/queries";
-import type { TrendRankItem } from "@/types";
+import { useCartStore } from "@/store/cart-store";
+import { api } from "@/lib/api";
+import type { TrendRankItem, ApiResponse, Product } from "@/types";
 
 const businessTypes = [
   "카페/베이커리",
@@ -57,8 +59,23 @@ function RankNumber({ rank }: { rank: number }) {
 
 export default function BestSellersPage() {
   const [activeTab, setActiveTab] = useState(businessTypes[0]);
+  const [addedId, setAddedId] = useState<string | null>(null);
+  const addItem = useCartStore((s) => s.addItem);
   const { data, isLoading } = useBestSellers(activeTab);
   const ranking: TrendRankItem[] = data?.data?.ranking || [];
+
+  const handleAddToCart = async (item: TrendRankItem) => {
+    try {
+      const res = await api.get(`/products/${item.product_id}`) as ApiResponse<Product>;
+      if (res.data) {
+        addItem(res.data, 1);
+        setAddedId(item.product_id);
+        setTimeout(() => setAddedId(null), 1500);
+      }
+    } catch {
+      alert("상품 정보를 불러올 수 없습니다.");
+    }
+  };
 
   const topItems = ranking.slice(0, 10);
   const frequentlyBoughtTogether = ranking.slice(5, 10);
@@ -182,12 +199,26 @@ export default function BestSellersPage() {
 
                         {/* Add to cart button */}
                         <motion.button
+                          onClick={() => handleAddToCart(item)}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          className="shrink-0 flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-primary-50 to-primary-100 px-4 py-2 text-sm font-semibold text-primary-700 transition-all hover:from-primary-600 hover:to-primary-700 hover:text-white hover:shadow-md hover:shadow-primary-200/50"
+                          className={`shrink-0 flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-semibold transition-all ${
+                            addedId === item.product_id
+                              ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
+                              : "bg-gradient-to-r from-primary-50 to-primary-100 text-primary-700 hover:from-primary-600 hover:to-primary-700 hover:text-white hover:shadow-md hover:shadow-primary-200/50"
+                          }`}
                         >
-                          <ShoppingCart size={14} />
-                          담기
+                          {addedId === item.product_id ? (
+                            <>
+                              <Check size={14} />
+                              담음
+                            </>
+                          ) : (
+                            <>
+                              <ShoppingCart size={14} />
+                              담기
+                            </>
+                          )}
                         </motion.button>
                       </motion.div>
                     ))}

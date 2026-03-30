@@ -97,9 +97,12 @@ export default function CartPage() {
                     {/* Product info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[16px] font-semibold text-gray-900">
+                        <Link
+                          href={`/products/${item.product.id}`}
+                          className="text-[16px] font-semibold text-gray-900 hover:text-primary-700 transition-colors"
+                        >
                           {item.product.name}
-                        </span>
+                        </Link>
                         <span className="inline-flex items-center rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-medium text-primary-700">
                           {item.product.category}
                         </span>
