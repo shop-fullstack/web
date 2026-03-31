@@ -39,7 +39,7 @@ export default function ForecastPage() {
           <p className="mt-5 text-lg font-semibold text-gray-900">로그인이 필요합니다</p>
           <Link
             href="/login"
-            className="mt-6 rounded-xl bg-gradient-to-r from-primary-700 to-primary-500 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-200"
+            className="mt-6 rounded-xl bg-primary-700 hover:bg-primary-600 px-8 py-3 text-sm font-semibold text-white shadow-sm transition-all"
           >
             로그인하기
           </Link>

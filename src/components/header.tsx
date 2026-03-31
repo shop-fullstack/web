@@ -106,7 +106,7 @@ export function Header() {
           ) : (
             <Link
               href="/login"
-              className="rounded-xl bg-gradient-to-r from-primary-700 to-primary-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-700/20 transition-all duration-200 hover:shadow-xl hover:shadow-primary-700/30 hover:brightness-110"
+              className="rounded-xl bg-primary-700 hover:bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200"
             >
               로그인
             </Link>

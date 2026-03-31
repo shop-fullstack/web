@@ -84,7 +84,7 @@ export function RecommendationCard({ item }: { item: RecommendationItem }) {
         </Link>
         <p className="mt-auto pt-2 text-base font-bold text-primary-700">
           {product.price_per_box.toLocaleString()}
-          <span className="text-sm font-medium text-gray-400">원</span>
+          <span className="text-sm font-medium text-gray-500">원</span>
         </p>
 
         {/* Add to cart */}

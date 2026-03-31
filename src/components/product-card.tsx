@@ -55,7 +55,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Price area - fixed height */}
         <div className="mt-auto flex h-[3.2rem] flex-col justify-end gap-0.5 pt-1">
-          <span className={`text-xs ${product.price_per_unit !== product.price_per_box ? "text-gray-400 line-through" : "invisible"}`}>
+          <span className={`text-xs ${product.price_per_unit !== product.price_per_box ? "text-gray-500 line-through" : "invisible"}`}>
             {product.price_per_unit.toLocaleString()}원
           </span>
           <span className="text-lg font-bold text-primary-700">
