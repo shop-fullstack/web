@@ -89,7 +89,7 @@ export function Header() {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       exit={{ scale: 0 }}
-                      className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-700 px-1 text-[10px] font-bold text-white shadow-lg shadow-primary-700/30"
+                      className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-700 px-1 text-[10px] font-bold text-white shadow-sm"
                     >
                       {cartCount}
                     </motion.span>
@@ -98,7 +98,7 @@ export function Header() {
               </Link>
               <Link
                 href="/mypage"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary-700 to-primary-500 text-sm font-bold text-white shadow-lg shadow-primary-700/20 transition-transform duration-200 hover:scale-105"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-700 text-sm font-bold text-white shadow-sm transition-transform duration-200 hover:scale-105"
               >
                 {user?.owner_name?.charAt(0) || "U"}
               </Link>

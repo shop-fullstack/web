@@ -37,7 +37,7 @@ export function ForecastChart({ data, color = "from-primary-700 to-primary-500",
               <motion.div
                 initial={{ height: 0 }}
                 animate={{ height: barH }}
-                transition={{ duration: 0.8, delay: i * 0.1 + 0.1, type: "spring", bounce: 0.2 }}
+                transition={{ duration: 0.8, delay: i * 0.1 + 0.1, type: "spring", bounce: 0.15 }}
                 className={`absolute bottom-0 w-full max-w-[48px] rounded-t-lg bg-gradient-to-t ${color} shadow-sm`}
               />
             </div>

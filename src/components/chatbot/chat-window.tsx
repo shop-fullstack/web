@@ -50,8 +50,8 @@ export function ChatWindow() {
       initial={{ opacity: 0, y: 20, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 20, scale: 0.95 }}
-      transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
-      className="fixed inset-0 sm:inset-auto sm:bottom-20 sm:right-4 z-50 flex w-full h-full sm:w-[380px] sm:h-[520px] flex-col overflow-hidden sm:rounded-2xl bg-gray-50 shadow-2xl border border-gray-200"
+      transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
+      className="fixed inset-0 sm:inset-auto sm:bottom-20 sm:right-4 z-50 flex w-full h-full sm:w-[380px] sm:h-[520px] flex-col overflow-hidden sm:rounded-2xl bg-gray-50 shadow-lg border border-gray-200"
     >
       {/* Header */}
       <div className="flex items-center justify-between bg-primary-700 px-5 py-3.5">

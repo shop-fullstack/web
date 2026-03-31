@@ -257,7 +257,7 @@ export default function BestSellersPage() {
                         key={item.product_id}
                         variants={cardVariants}
                         whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                        className="group rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg hover:border-gray-200 transition-all cursor-pointer"
+                        className="group rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden hover:shadow-md hover:border-gray-200 transition-all cursor-pointer"
                       >
                         {/* Image placeholder */}
                         <div className="relative flex h-36 items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">

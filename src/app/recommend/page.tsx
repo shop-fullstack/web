@@ -69,7 +69,7 @@ export default function RecommendPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden rounded-2xl bg-primary-700 px-10 py-10 text-white shadow-xl"
+          className="relative overflow-hidden rounded-2xl bg-primary-700 px-10 py-10 text-white shadow-sm"
         >
           <div className="absolute inset-0 bg-primary-900/10" />
           <div className="relative">

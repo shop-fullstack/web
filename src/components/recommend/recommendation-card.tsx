@@ -30,7 +30,7 @@ export function RecommendationCard({ item }: { item: RecommendationItem }) {
   return (
     <motion.div
       whileHover={{ y: -6, transition: { duration: 0.2 } }}
-      className="group relative flex flex-col overflow-hidden rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-shadow"
+      className="group relative flex flex-col overflow-hidden rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
     >
       {/* AI Reason Badge */}
       <div className="absolute left-3 top-3 z-10 flex items-center gap-1">
