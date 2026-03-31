@@ -116,7 +116,7 @@ function ProductsContent() {
     <div className="min-h-screen bg-gradient-to-b from-gray-50/80 to-white">
       <Header />
 
-      <div className="mx-auto flex max-w-layout gap-8 px-8 py-8">
+      <div className="mx-auto flex max-w-layout gap-8 px-4 md:px-8 py-8">
         {/* Sidebar */}
         <aside className="hidden lg:block lg:w-[260px] shrink-0">
           <motion.div

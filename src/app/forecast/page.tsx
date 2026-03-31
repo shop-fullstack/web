@@ -57,7 +57,7 @@ export default function ForecastPage() {
     <div className="min-h-screen bg-gradient-to-b from-gray-50/80 to-white">
       <Header />
 
-      <div className="mx-auto max-w-layout px-8 py-10">
+      <div className="mx-auto max-w-layout px-4 md:px-8 lg:px-20 py-10">
         {/* Title */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight">수요 예측 대시보드</h1>
