@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, ShoppingCart, Package, Check } from "lucide-react";
 import { Header } from "@/components/header";
+import { AiInsightCard } from "@/components/ai-insight-card";
 import { useBestSellers } from "@/lib/queries";
 import { useCartStore } from "@/store/cart-store";
 import { api } from "@/lib/api";
@@ -63,6 +64,7 @@ export default function BestSellersPage() {
   const addItem = useCartStore((s) => s.addItem);
   const { data, isLoading } = useBestSellers(activeTab);
   const ranking: TrendRankItem[] = data?.data?.ranking || [];
+  const aiInsight = data?.data?.ai_insight;
 
   const handleAddToCart = async (item: TrendRankItem) => {
     try {
@@ -126,6 +128,9 @@ export default function BestSellersPage() {
             </button>
           ))}
         </motion.div>
+
+        {/* AI Insight */}
+        {aiInsight && <AiInsightCard insight={aiInsight} />}
 
         {/* Section title */}
         <div className="flex items-center gap-3">

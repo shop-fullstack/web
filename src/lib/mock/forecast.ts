@@ -60,10 +60,16 @@ export function generateMockForecast(businessType: string): ForecastResponse {
     };
   });
 
+  const risingItems = forecasts.filter((f) => f.trend === "rising");
+  const insightText = risingItems.length > 0
+    ? `${risingItems.map((f) => f.product_name).join(", ")} 상품의 수요가 상승 추세입니다. 평소보다 20% 정도 여유 재고를 확보하시길 권합니다. 안정적인 상품은 현재 수준을 유지하셔도 됩니다.`
+    : "전반적으로 수요가 안정적입니다. 현재 재고 수준을 유지하시면 됩니다.";
+
   return {
     business_type: businessType,
     period: "4주",
     forecasts,
     generated_at: new Date().toISOString(),
+    ai_insight: insightText,
   };
 }

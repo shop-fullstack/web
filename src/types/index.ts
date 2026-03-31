@@ -71,11 +71,13 @@ export interface TrendReport {
   period: "weekly" | "monthly";
   generated_at: string;
   ranking: TrendRankItem[];
+  ai_insight?: string;
 }
 
 export interface BestSellerReport {
   business_type: string;
   ranking: TrendRankItem[];
+  ai_insight?: string;
 }
 
 export interface SubscriptionItem {
@@ -117,6 +119,7 @@ export interface RecommendationResponse {
   user_business_type: string;
   items: RecommendationItem[];
   generated_at: string;
+  ai_insight?: string;
 }
 
 // === Phase 3: 수요 예측 ===
@@ -142,6 +145,7 @@ export interface ForecastResponse {
   period: string;
   forecasts: ProductForecast[];
   generated_at: string;
+  ai_insight?: string;
 }
 
 // === Phase 3: AI 챗봇 ===

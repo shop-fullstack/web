@@ -5,6 +5,7 @@ import { Sparkles, Loader2, LogIn } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Header } from "@/components/header";
+import { AiInsightCard } from "@/components/ai-insight-card";
 import { RecommendationCard } from "@/components/recommend/recommendation-card";
 import { useRecommendations } from "@/lib/queries";
 import { useAuthStore } from "@/store/auth-store";
@@ -32,6 +33,7 @@ export default function RecommendPage() {
   const businessType = user?.business_type ?? "";
   const { data, isLoading } = useRecommendations(businessType);
   const items = data?.data?.items ?? [];
+  const aiInsight = data?.data?.ai_insight;
   const [activeTab, setActiveTab] = useState<string>("전체");
 
   const filterType = FILTER_MAP[activeTab];
@@ -84,6 +86,9 @@ export default function RecommendPage() {
             </p>
           </div>
         </motion.div>
+
+        {/* AI Insight */}
+        {aiInsight && <AiInsightCard insight={aiInsight} className="mt-6" />}
 
         {/* Tabs */}
         <motion.div

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { TrendingUp, BarChart3, Users, ShoppingBag, Loader2, Calendar } from "lucide-react";
 import { Header } from "@/components/header";
+import { AiInsightCard } from "@/components/ai-insight-card";
 import { useTrendReport } from "@/lib/queries";
 import type { TrendRankItem } from "@/types";
 
@@ -109,6 +110,7 @@ const barGradients = [
 export default function TrendReportPage() {
   const { data, isLoading } = useTrendReport("weekly");
   const ranking: TrendRankItem[] = data?.data?.ranking || [];
+  const aiInsight = data?.data?.ai_insight;
 
   const topProduct = ranking[0];
   const risingProduct = ranking.find((item) => item.change === "up");
@@ -221,6 +223,9 @@ export default function TrendReportPage() {
                 );
               })}
             </motion.div>
+
+            {/* AI Insight */}
+            {aiInsight && <AiInsightCard insight={aiInsight} />}
 
             {/* Two-column layout */}
             <div className="grid grid-cols-2 gap-6">

@@ -72,5 +72,6 @@ export function generateMockRecommendations(businessType: string): Recommendatio
     user_business_type: businessType,
     items: items.slice(0, 8),
     generated_at: new Date().toISOString(),
+    ai_insight: `${businessType} 업종 사장님들이 가장 많이 주문하는 상품 위주로 추천드렸습니다. 최근 트렌드와 구매 패턴을 종합 분석하여 매출 향상에 도움이 될 상품을 선별했습니다.`,
   };
 }

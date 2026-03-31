@@ -5,6 +5,7 @@ import { BarChart3, Table2, TrendingUp, TrendingDown, AlertTriangle, Loader2, Lo
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Header } from "@/components/header";
+import { AiInsightCard } from "@/components/ai-insight-card";
 import { ForecastChart } from "@/components/forecast/forecast-chart";
 import { ForecastTable } from "@/components/forecast/forecast-table";
 import { useForecast } from "@/lib/queries";
@@ -24,6 +25,7 @@ export default function ForecastPage() {
   const businessType = user?.business_type ?? "";
   const { data, isLoading } = useForecast(businessType);
   const forecasts = data?.data?.forecasts ?? [];
+  const aiInsight = data?.data?.ai_insight;
   const [view, setView] = useState<"chart" | "table">("chart");
 
   if (!isAuthenticated) {
@@ -128,6 +130,9 @@ export default function ForecastPage() {
                 </div>
               )}
             </motion.div>
+
+            {/* AI Insight */}
+            {aiInsight && <AiInsightCard insight={aiInsight} />}
 
             {/* View Toggle */}
             <div className="mt-8 flex items-center justify-between">
