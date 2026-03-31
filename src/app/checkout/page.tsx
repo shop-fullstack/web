@@ -72,7 +72,7 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <div className="mx-auto max-w-layout px-12 py-8">
+      <div className="mx-auto max-w-layout px-4 md:px-8 lg:px-12 py-8">
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}

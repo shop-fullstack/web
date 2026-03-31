@@ -35,7 +35,7 @@ export default function CartPage() {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <div className="mx-auto max-w-layout px-12 py-8">
+      <div className="mx-auto max-w-layout px-4 md:px-8 lg:px-12 py-8">
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -58,7 +58,7 @@ export default function CartPage() {
             <p className="text-gray-900 text-lg font-semibold mb-2">
               장바구니가 비어있습니다
             </p>
-            <p className="text-gray-400 text-sm mb-8">
+            <p className="text-gray-500 text-sm mb-8">
               마음에 드는 상품을 담아보세요
             </p>
             <Link
@@ -107,7 +107,7 @@ export default function CartPage() {
                           {item.product.category}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-gray-500">
                         개당 {item.product.price_per_unit.toLocaleString()}원 / 박스{" "}
                         {item.product.price_per_box.toLocaleString()}원
                       </p>
@@ -149,7 +149,7 @@ export default function CartPage() {
                       <button
                         onClick={() => removeItem(item.product.id)}
                         aria-label="상품 삭제"
-                        className="flex h-7 w-7 items-center justify-center rounded-lg text-gray-400 transition-colors duration-150 hover:bg-red-50 hover:text-red-500"
+                        className="flex h-7 w-7 items-center justify-center rounded-lg text-gray-500 transition-colors duration-150 hover:bg-red-50 hover:text-red-500"
                       >
                         <X size={16} />
                       </button>
@@ -177,11 +177,11 @@ export default function CartPage() {
 
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-400">상품수</span>
+                      <span className="text-gray-500">상품수</span>
                       <span className="text-gray-900 font-medium">{itemCount}개</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">상품금액</span>
+                      <span className="text-gray-500">상품금액</span>
                       <span className="text-gray-900 font-medium">
                         {totalAmount().toLocaleString()}원
                       </span>

@@ -12,14 +12,14 @@ const rowVariants = {
 function TrendBadge({ trend, change }: { trend: ProductForecast["trend"]; change: number }) {
   if (trend === "rising") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-600">
+      <span className="inline-flex items-center gap-1 rounded-full bg-success-light px-2.5 py-1 text-xs font-semibold text-success">
         <TrendingUp size={12} /> +{change}%
       </span>
     );
   }
   if (trend === "declining") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2.5 py-1 text-xs font-semibold text-red-500">
+      <span className="inline-flex items-center gap-1 rounded-full bg-error-light px-2.5 py-1 text-xs font-semibold text-error">
         <TrendingDown size={12} /> {change}%
       </span>
     );

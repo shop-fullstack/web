@@ -51,7 +51,7 @@ export default function RecommendPage() {
           <p className="mt-1.5 text-sm text-gray-500">맞춤 추천을 받으려면 로그인해주세요</p>
           <Link
             href="/login"
-            className="mt-6 rounded-xl bg-gradient-to-r from-primary-700 to-primary-500 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-200"
+            className="mt-6 rounded-xl bg-primary-700 hover:bg-primary-600 px-8 py-3 text-sm font-semibold text-white shadow-sm transition-all"
           >
             로그인하기
           </Link>
@@ -71,7 +71,7 @@ export default function RecommendPage() {
           animate={{ opacity: 1, y: 0 }}
           className="relative overflow-hidden rounded-2xl bg-primary-700 px-10 py-10 text-white shadow-xl"
         >
-          <div className="absolute inset-0 bg-primary-500/20" />
+          <div className="absolute inset-0 bg-primary-900/10" />
           <div className="relative">
             <div className="flex items-center gap-2 text-sm font-medium text-white/80">
               <Sparkles size={16} />

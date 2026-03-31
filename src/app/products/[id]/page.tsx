@@ -226,7 +226,7 @@ export default function ProductDetailPage({
             {/* Price box */}
             <div className="mt-6 rounded-2xl bg-primary-50 p-5 ring-1 ring-primary-100/50">
               {product.price_per_unit !== product.price_per_box && (
-                <p className="text-sm text-gray-400 line-through">
+                <p className="text-sm text-gray-500 line-through">
                   개당 단가: {product.price_per_unit.toLocaleString()}원
                 </p>
               )}

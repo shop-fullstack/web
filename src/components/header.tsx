@@ -32,11 +32,11 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 h-16 bg-white/80 backdrop-blur-lg transition-all duration-300 ${
+      className={`sticky top-0 z-50 h-16 bg-white/95 transition-all duration-300 ${
         scrolled ? "shadow-md border-b border-gray-100" : "border-b border-gray-200"
       }`}
     >
-      <div className="mx-auto flex h-full max-w-layout items-center justify-between px-8">
+      <div className="mx-auto flex h-full max-w-layout items-center justify-between px-4 md:px-8">
         <div className="flex items-center gap-10">
           <Link href="/" className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary-700 to-primary-500 text-xs font-bold text-white">

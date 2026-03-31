@@ -15,11 +15,11 @@ const STATUS_TABS = ["전체", "주문완료", "배송중", "배송완료"] as c
 function getStatusBadgeClasses(status: Order["status"]) {
   switch (status) {
     case "배송완료":
-      return "bg-emerald-50 text-emerald-600 border border-emerald-200";
+      return "bg-success-light text-success border border-success/20";
     case "배송중":
-      return "bg-amber-50 text-amber-600 border border-amber-200";
+      return "bg-warning-light text-warning border border-warning/20";
     case "주문완료":
-      return "bg-blue-50 text-blue-600 border border-blue-200";
+      return "bg-info-light text-primary-700 border border-primary-200";
     case "배송준비":
       return "bg-gray-100 text-gray-600 border border-gray-200";
     default:

@@ -100,7 +100,7 @@ export default function ForecastPage() {
                     <span className="text-sm font-medium text-gray-500">가장 높은 성장</span>
                   </div>
                   <p className="mt-3 text-lg font-bold text-gray-900">{risingProduct.product_name}</p>
-                  <p className="text-sm font-semibold text-green-600">+{risingProduct.change_percent}%</p>
+                  <p className="text-sm font-semibold text-success">+{risingProduct.change_percent}%</p>
                 </div>
               )}
 
@@ -114,7 +114,7 @@ export default function ForecastPage() {
                     <span className="text-sm font-medium text-gray-500">재고 주의</span>
                   </div>
                   <p className="mt-3 text-lg font-bold text-gray-900">{decliningProduct.product_name}</p>
-                  <p className="text-sm font-semibold text-red-500">{decliningProduct.change_percent}%</p>
+                  <p className="text-sm font-semibold text-error">{decliningProduct.change_percent}%</p>
                 </div>
               )}
               {decliningProduct && decliningProduct.change_percent >= 0 && (

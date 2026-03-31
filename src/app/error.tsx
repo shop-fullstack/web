@@ -16,10 +16,10 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-gray-50 to-white px-6">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-6" role="alert">
       <div className="flex max-w-md flex-col items-center text-center">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-red-50">
-          <AlertTriangle size={36} className="text-red-400" />
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-error-light">
+          <AlertTriangle size={36} className="text-error" />
         </div>
         <h2 className="mt-6 text-xl font-bold text-gray-900">
           문제가 발생했습니다
@@ -37,7 +37,7 @@ export default function GlobalError({
           </button>
           <Link
             href="/"
-            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary-700 to-primary-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-200 transition-all hover:shadow-xl"
+            className="flex items-center gap-2 rounded-xl bg-primary-700 hover:bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all"
           >
             <Home size={16} />
             홈으로
