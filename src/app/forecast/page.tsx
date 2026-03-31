@@ -87,7 +87,7 @@ export default function ForecastPage() {
                   </div>
                   <span className="text-sm font-medium text-gray-500">다음 주 예상 총 주문량</span>
                 </div>
-                <p className="mt-3 text-3xl font-bold text-gray-900">{totalNextWeek.toLocaleString()}<span className="text-lg font-medium text-gray-400">건</span></p>
+                <p className="mt-3 text-3xl font-bold text-gray-900">{totalNextWeek.toLocaleString()}<span className="text-lg font-medium text-gray-500">건</span></p>
               </div>
 
               {/* Rising */}
