@@ -122,7 +122,7 @@ export default function CartPage() {
                             )
                           }
                           aria-label="수량 감소"
-                          className="flex h-8 w-8 items-center justify-center rounded-xl border border-gray-200 text-gray-500 transition-colors duration-150 hover:bg-gray-100 hover:text-gray-700"
+                          className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 text-gray-500 transition-colors duration-150 hover:bg-gray-100 hover:text-gray-700"
                         >
                           <Minus size={14} />
                         </button>
@@ -137,7 +137,7 @@ export default function CartPage() {
                             )
                           }
                           aria-label="수량 증가"
-                          className="flex h-8 w-8 items-center justify-center rounded-xl border border-gray-200 text-gray-500 transition-colors duration-150 hover:bg-gray-100 hover:text-gray-700"
+                          className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 text-gray-500 transition-colors duration-150 hover:bg-gray-100 hover:text-gray-700"
                         >
                           <Plus size={14} />
                         </button>
@@ -149,7 +149,7 @@ export default function CartPage() {
                       <button
                         onClick={() => removeItem(item.product.id)}
                         aria-label="상품 삭제"
-                        className="flex h-7 w-7 items-center justify-center rounded-lg text-gray-500 transition-colors duration-150 hover:bg-red-50 hover:text-red-500"
+                        className="flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition-colors duration-150 hover:bg-error-light hover:text-error"
                       >
                         <X size={16} />
                       </button>
