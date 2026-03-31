@@ -9,10 +9,10 @@ import { getCategoryVisual } from "@/lib/product-visuals";
 import type { RecommendationItem } from "@/types";
 
 const BADGE_COLORS: Record<RecommendationItem["reason_type"], string> = {
-  business_type: "from-violet-500 to-indigo-500",
-  trending: "from-emerald-500 to-teal-500",
-  order_history: "from-blue-500 to-cyan-500",
-  similar: "from-amber-500 to-orange-500",
+  business_type: "bg-primary-700 text-white",
+  trending: "bg-primary-700 text-white",
+  order_history: "bg-primary-700 text-white",
+  similar: "bg-primary-700 text-white",
 };
 
 export function RecommendationCard({ item }: { item: RecommendationItem }) {
@@ -35,7 +35,7 @@ export function RecommendationCard({ item }: { item: RecommendationItem }) {
       {/* AI Reason Badge */}
       <div className="absolute left-3 top-3 z-10 flex items-center gap-1">
         <span
-          className={`flex items-center gap-1 rounded-full bg-gradient-to-r ${BADGE_COLORS[reason_type]} px-2.5 py-1 text-[11px] font-semibold text-white shadow-sm`}
+          className={`flex items-center gap-1 rounded-full ${BADGE_COLORS[reason_type]} px-2.5 py-1 text-[11px] font-semibold shadow-sm`}
         >
           <Sparkles size={10} />
           {reason}
@@ -51,18 +51,12 @@ export function RecommendationCard({ item }: { item: RecommendationItem }) {
             cy="16"
             r="13"
             fill="none"
-            stroke="url(#scoreGrad)"
+            stroke="var(--primary-500)"
             strokeWidth="2"
             strokeLinecap="round"
             strokeDasharray={`${(score / 100) * 81.68} 81.68`}
             transform="rotate(-90 16 16)"
           />
-          <defs>
-            <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#6366f1" />
-              <stop offset="100%" stopColor="#8b5cf6" />
-            </linearGradient>
-          </defs>
           <text x="16" y="18" textAnchor="middle" fontSize="9" fontWeight="700" fill="#4b5563">
             {score}
           </text>
@@ -100,7 +94,7 @@ export function RecommendationCard({ item }: { item: RecommendationItem }) {
           whileTap={{ scale: 0.96 }}
           className={`mt-3 flex h-10 w-full items-center justify-center gap-1.5 rounded-xl text-sm font-semibold transition-all ${
             added
-              ? "border border-emerald-200 bg-emerald-50 text-emerald-600"
+              ? "border border-primary-200 bg-primary-50 text-primary-700"
               : "border border-primary-200 bg-white text-primary-700 hover:bg-primary-50"
           }`}
         >

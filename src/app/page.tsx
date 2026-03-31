@@ -22,20 +22,20 @@ const scaleIn = {
 };
 
 const categories = [
-  { label: "식자재", icon: "🍳", color: "from-orange-50 to-amber-50", border: "border-orange-100" },
-  { label: "소모품", icon: "🧴", color: "from-blue-50 to-cyan-50", border: "border-blue-100" },
-  { label: "포장재", icon: "📦", color: "from-yellow-50 to-amber-50", border: "border-yellow-100" },
-  { label: "뷰티용품", icon: "💄", color: "from-pink-50 to-rose-50", border: "border-pink-100" },
-  { label: "인테리어", icon: "🪑", color: "from-emerald-50 to-green-50", border: "border-emerald-100" },
-  { label: "기타", icon: "📋", color: "from-gray-50 to-slate-50", border: "border-gray-200" },
+  { label: "식자재", icon: "🍳" },
+  { label: "소모품", icon: "🧴" },
+  { label: "포장재", icon: "📦" },
+  { label: "뷰티용품", icon: "💄" },
+  { label: "인테리어", icon: "🪑" },
+  { label: "기타", icon: "📋" },
 ];
 
 function getChangeIndicator(change: "up" | "down" | "same" | "new") {
   switch (change) {
     case "up":
-      return { label: "▲", className: "text-emerald-500" };
+      return { label: "▲", className: "text-success" };
     case "down":
-      return { label: "▼", className: "text-red-400" };
+      return { label: "▼", className: "text-error" };
     case "same":
       return { label: "—", className: "text-gray-400" };
     case "new":
@@ -58,24 +58,8 @@ export default function Home() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        {/* Animated gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-700 to-primary-500" />
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute -left-20 -top-20 h-96 w-96 rounded-full bg-blue-400/30 blur-3xl" />
-          <div className="absolute -bottom-20 right-20 h-80 w-80 rounded-full bg-indigo-400/20 blur-3xl" />
-          <div className="absolute right-1/3 top-1/4 h-64 w-64 rounded-full bg-cyan-400/15 blur-3xl" />
-        </div>
-        {/* Grid pattern overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-          }}
-        />
-
-        <div className="relative mx-auto max-w-layout px-8 py-24 md:py-32">
+      <section className="relative overflow-hidden bg-primary-700">
+        <div className="relative mx-auto max-w-layout px-4 md:px-8 lg:px-20 py-24 md:py-32">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -84,7 +68,7 @@ export default function Home() {
           >
             <motion.div
               variants={fadeUp}
-              className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/90 backdrop-blur-sm"
+              className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/90"
             >
               <Sparkles size={14} />
               AI 기반 트렌드 분석 플랫폼
@@ -95,7 +79,7 @@ export default function Home() {
             >
               소상공인의
               <br />
-              <span className="bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
+              <span className="text-primary-100">
                 스마트 매입
               </span>
               , 비즈마트
@@ -111,7 +95,7 @@ export default function Home() {
             <motion.div variants={fadeUp} className="mt-8 flex gap-4">
               <Link
                 href="/products"
-                className="group inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-4 font-semibold text-primary-700 shadow-xl shadow-black/10 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/20"
+                className="group inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-4 font-semibold text-primary-700 shadow transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
               >
                 상품 둘러보기
                 <ArrowRight
@@ -121,7 +105,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/trend"
-                className="inline-flex items-center gap-2 rounded-2xl border-2 border-white/20 px-8 py-4 font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-white/40 hover:bg-white/10"
+                className="inline-flex items-center gap-2 rounded-2xl border-2 border-white/20 px-8 py-4 font-semibold text-white transition-all duration-300 hover:border-white/40 hover:bg-white/10"
               >
                 트렌드 보기
               </Link>
@@ -132,17 +116,17 @@ export default function Home() {
 
       {/* Trend Banner Section */}
       <motion.section
-        className="relative -mt-6 mx-auto max-w-layout px-8"
+        className="relative -mt-6 mx-auto max-w-layout px-4 md:px-8 lg:px-20"
         initial="hidden"
         animate={!trendLoading ? "visible" : "hidden"}
         variants={stagger}
       >
         <motion.div
           variants={fadeUp}
-          className="rounded-2xl border border-gray-100 bg-white p-8 shadow-xl shadow-gray-200/50"
+          className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm"
         >
           <div className="mb-5 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-blue-500 shadow-lg shadow-primary-500/20">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-700">
               <TrendingUp size={20} className="text-white" />
             </div>
             <div>
@@ -194,7 +178,7 @@ export default function Home() {
 
       {/* Category Section */}
       <motion.section
-        className="mx-auto max-w-layout px-8 py-16"
+        className="mx-auto max-w-layout px-4 md:px-8 lg:px-20 py-16"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
@@ -209,7 +193,7 @@ export default function Home() {
             <motion.div key={cat.label} variants={scaleIn}>
               <Link
                 href={`/products?category=${cat.label}`}
-                className={`group flex flex-col items-center justify-center gap-2.5 rounded-2xl border ${cat.border} bg-gradient-to-br ${cat.color} p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg`}
+                className="group flex flex-col items-center justify-center gap-2.5 rounded-2xl border border-gray-200 bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm hover:border-primary-200"
               >
                 <span className="text-3xl transition-transform duration-300 group-hover:scale-110">
                   {cat.icon}
@@ -225,7 +209,7 @@ export default function Home() {
 
       {/* Recommended Products Section */}
       <motion.section
-        className="mx-auto max-w-layout px-8 pb-20"
+        className="mx-auto max-w-layout px-4 md:px-8 lg:px-20 pb-20"
         initial="hidden"
         animate={!productsLoading ? "visible" : "hidden"}
         variants={stagger}
@@ -255,7 +239,7 @@ export default function Home() {
             <button
               type="button"
               onClick={() => refetchProducts()}
-              className="mt-4 rounded-xl bg-gradient-to-r from-primary-700 to-primary-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-700/20 hover:brightness-110"
+              className="mt-4 rounded-xl bg-primary-700 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 transition-colors"
             >
               다시 시도
             </button>
@@ -289,14 +273,14 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-gray-200 bg-white">
-        <div className="mx-auto flex max-w-layout items-center justify-between px-8 py-8">
+        <div className="mx-auto flex max-w-layout items-center justify-between px-4 md:px-8 lg:px-20 py-8">
           <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary-700 to-primary-500 text-[10px] font-bold text-white">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary-700 text-[10px] font-bold text-white">
               B
             </div>
             <span className="text-sm font-bold text-gray-900">비즈마트</span>
           </div>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-500">
             © 2026 BizMart. 포트폴리오 프로젝트입니다.
           </p>
         </div>

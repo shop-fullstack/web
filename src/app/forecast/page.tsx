@@ -12,12 +12,12 @@ import { useForecast } from "@/lib/queries";
 import { useAuthStore } from "@/store/auth-store";
 
 const CHART_COLORS = [
-  "from-primary-500 to-blue-500",
-  "from-violet-500 to-purple-500",
-  "from-emerald-500 to-teal-500",
-  "from-amber-500 to-orange-500",
-  "from-rose-500 to-pink-500",
-  "from-cyan-500 to-sky-500",
+  "from-primary-700 to-primary-500",
+  "from-primary-600 to-primary-400",
+  "from-primary-700 to-primary-500",
+  "from-primary-600 to-primary-400",
+  "from-primary-700 to-primary-500",
+  "from-primary-600 to-primary-400",
 ];
 
 export default function ForecastPage() {
@@ -77,12 +77,12 @@ export default function ForecastPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="mt-8 grid grid-cols-3 gap-5"
+              className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-5"
             >
               {/* Total */}
               <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-6">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-blue-500 shadow-sm">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-700 shadow-sm">
                     <BarChart3 size={18} className="text-white" />
                   </div>
                   <span className="text-sm font-medium text-gray-500">다음 주 예상 총 주문량</span>
@@ -94,13 +94,13 @@ export default function ForecastPage() {
               {risingProduct && (
                 <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-6">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 shadow-sm">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-700 shadow-sm">
                       <TrendingUp size={18} className="text-white" />
                     </div>
                     <span className="text-sm font-medium text-gray-500">가장 높은 성장</span>
                   </div>
                   <p className="mt-3 text-lg font-bold text-gray-900">{risingProduct.product_name}</p>
-                  <p className="text-sm font-semibold text-emerald-600">+{risingProduct.change_percent}%</p>
+                  <p className="text-sm font-semibold text-green-600">+{risingProduct.change_percent}%</p>
                 </div>
               )}
 
@@ -108,7 +108,7 @@ export default function ForecastPage() {
               {decliningProduct && decliningProduct.change_percent < 0 && (
                 <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-6">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 to-rose-500 shadow-sm">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-700 shadow-sm">
                       <AlertTriangle size={18} className="text-white" />
                     </div>
                     <span className="text-sm font-medium text-gray-500">재고 주의</span>
@@ -120,7 +120,7 @@ export default function ForecastPage() {
               {decliningProduct && decliningProduct.change_percent >= 0 && (
                 <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-6">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-gray-400 to-gray-500 shadow-sm">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-700 shadow-sm">
                       <TrendingDown size={18} className="text-white" />
                     </div>
                     <span className="text-sm font-medium text-gray-500">가장 낮은 변화</span>
@@ -137,9 +137,11 @@ export default function ForecastPage() {
             {/* View Toggle */}
             <div className="mt-8 flex items-center justify-between">
               <h2 className="text-lg font-bold text-gray-900">상품별 예측</h2>
-              <div className="inline-flex rounded-xl bg-gray-100 p-1">
+              <div className="inline-flex rounded-xl bg-gray-100 p-1" role="radiogroup" aria-label="보기 방식">
                 <button
                   onClick={() => setView("chart")}
+                  role="radio"
+                  aria-checked={view === "chart"}
                   className={`relative flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition-all ${
                     view === "chart" ? "text-white" : "text-gray-500"
                   }`}
@@ -152,6 +154,8 @@ export default function ForecastPage() {
                 </button>
                 <button
                   onClick={() => setView("table")}
+                  role="radio"
+                  aria-checked={view === "table"}
                   className={`relative flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition-all ${
                     view === "table" ? "text-white" : "text-gray-500"
                   }`}
@@ -170,7 +174,7 @@ export default function ForecastPage() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="mt-6 grid grid-cols-2 gap-5"
+                className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-5"
               >
                 {forecasts.map((f, i) => (
                   <motion.div
@@ -199,9 +203,9 @@ export default function ForecastPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="mt-8 rounded-xl bg-amber-50 border border-amber-100 p-4"
+              className="mt-8 rounded-xl bg-primary-50 border border-primary-100 p-4"
             >
-              <p className="text-xs text-amber-600">
+              <p className="text-xs text-primary-700">
                 이 예측은 최근 4주간의 주문 데이터와 계절성 패턴을 기반으로 생성됩니다. 실제 수요와 차이가 있을 수 있습니다.
               </p>
             </motion.div>

@@ -67,19 +67,19 @@ export default function MyPage() {
     <div className="min-h-screen bg-gray-50/50">
       <Header />
 
-      <main className="mx-auto flex max-w-layout gap-8 px-12 py-10">
+      <main className="mx-auto flex flex-col lg:flex-row max-w-layout gap-8 px-4 md:px-8 lg:px-12 py-10">
         {/* Sidebar */}
         <motion.aside
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-[260px] shrink-0"
+          className="w-full lg:w-[260px] shrink-0"
         >
           <div className="flex flex-col items-center gap-6 rounded-2xl bg-white border border-gray-100 shadow-sm p-7">
-            {/* Avatar with gradient ring */}
+            {/* Avatar */}
             <div className="relative">
-              <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-primary-400 via-violet-400 to-indigo-500 opacity-80 blur-[2px]" />
-              <div className="relative flex h-[68px] w-[68px] items-center justify-center rounded-full bg-gradient-to-br from-primary-600 to-indigo-600 ring-3 ring-white">
+              <div className="absolute -inset-1 rounded-full bg-primary-500 opacity-30 blur-[2px]" />
+              <div className="relative flex h-[68px] w-[68px] items-center justify-center rounded-full bg-primary-700 ring-3 ring-white">
                 <span className="text-xl font-bold text-white">
                   {user?.owner_name?.charAt(0) ?? ""}
                 </span>
@@ -100,7 +100,7 @@ export default function MyPage() {
             <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
             {/* Nav menu */}
-            <nav className="flex w-full flex-col gap-1">
+            <nav role="navigation" aria-label="마이페이지 메뉴" className="flex w-full flex-col gap-1">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
@@ -139,7 +139,7 @@ export default function MyPage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleLogout}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-red-500 to-rose-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:shadow-md hover:shadow-red-200/50 transition-shadow"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-500 hover:bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors"
             >
               <LogOut size={16} />
               로그아웃
@@ -233,6 +233,7 @@ export default function MyPage() {
                         </span>
                         <input
                           type="text"
+                          aria-label={row.label}
                           value={editForm[row.key]}
                           onChange={(e) =>
                             setEditForm((prev) => ({ ...prev, [row.key]: e.target.value }))
@@ -270,11 +271,11 @@ export default function MyPage() {
             <h2 className="mb-3 text-lg font-bold text-gray-900">회원 등급</h2>
             <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-6">
               <div className="flex items-start gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-sm">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-700">
                   <Shield size={18} className="text-white" />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <span className="inline-flex w-fit items-center rounded-full bg-gradient-to-r from-primary-500 to-indigo-500 px-4 py-1.5 text-sm font-bold text-white shadow-sm">
+                  <span className="inline-flex w-fit items-center rounded-full bg-primary-500 px-4 py-1.5 text-sm font-bold text-white">
                     {user?.grade ?? "일반회원"}
                   </span>
                   <p className="text-sm text-gray-500 leading-relaxed">

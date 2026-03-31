@@ -9,11 +9,11 @@ interface ForecastChartProps {
   height?: number;
 }
 
-export function ForecastChart({ data, color = "from-primary-500 to-blue-500", height = 200 }: ForecastChartProps) {
+export function ForecastChart({ data, color = "from-primary-700 to-primary-500", height = 200 }: ForecastChartProps) {
   const maxVal = Math.max(...data.map((d) => d.confidence_high), 1);
 
   return (
-    <div className="flex items-end gap-3" style={{ height }}>
+    <div className="flex items-end gap-3" style={{ height }} role="img" aria-label="수요 예측 차트">
       {data.map((dp, i) => {
         const barH = (dp.predicted_orders / maxVal) * height;
         const highH = (dp.confidence_high / maxVal) * height;

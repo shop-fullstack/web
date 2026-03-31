@@ -52,7 +52,7 @@ export default function CartPage() {
             transition={{ duration: 0.5 }}
             className="flex flex-col items-center justify-center py-24"
           >
-            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-primary-100 to-blue-100 mb-6">
+            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary-50 mb-6">
               <ShoppingBag size={40} className="text-primary-500" />
             </div>
             <p className="text-gray-900 text-lg font-semibold mb-2">
@@ -63,13 +63,13 @@ export default function CartPage() {
             </p>
             <Link
               href="/products"
-              className="rounded-xl bg-gradient-to-r from-primary-700 to-primary-500 px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary-700/20 transition-all duration-200 hover:scale-[1.03] hover:shadow-xl hover:shadow-primary-700/25"
+              className="rounded-xl bg-primary-700 hover:bg-primary-600 px-8 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-200"
             >
               상품 둘러보기
             </Link>
           </motion.div>
         ) : (
-          <div className="flex gap-8">
+          <div className="flex flex-col lg:flex-row gap-8">
             {/* Cart items - left column */}
             <div className="flex-1 space-y-4">
               <AnimatePresence mode="popLayout">
@@ -121,6 +121,7 @@ export default function CartPage() {
                               item.quantity - 1
                             )
                           }
+                          aria-label="수량 감소"
                           className="flex h-8 w-8 items-center justify-center rounded-xl border border-gray-200 text-gray-500 transition-colors duration-150 hover:bg-gray-100 hover:text-gray-700"
                         >
                           <Minus size={14} />
@@ -135,6 +136,7 @@ export default function CartPage() {
                               item.quantity + 1
                             )
                           }
+                          aria-label="수량 증가"
                           className="flex h-8 w-8 items-center justify-center rounded-xl border border-gray-200 text-gray-500 transition-colors duration-150 hover:bg-gray-100 hover:text-gray-700"
                         >
                           <Plus size={14} />
@@ -146,6 +148,7 @@ export default function CartPage() {
                     <div className="flex flex-col items-end gap-2">
                       <button
                         onClick={() => removeItem(item.product.id)}
+                        aria-label="상품 삭제"
                         className="flex h-7 w-7 items-center justify-center rounded-lg text-gray-400 transition-colors duration-150 hover:bg-red-50 hover:text-red-500"
                       >
                         <X size={16} />
@@ -160,7 +163,7 @@ export default function CartPage() {
             </div>
 
             {/* Order summary - right column */}
-            <div className="w-[380px] flex-shrink-0">
+            <div className="w-full lg:w-[380px] flex-shrink-0">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -186,8 +189,8 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                {/* Gradient total section */}
-                <div className="bg-gradient-to-r from-primary-50 to-blue-50 px-6 py-5">
+                {/* Total section */}
+                <div className="bg-primary-50 px-6 py-5">
                   <div className="flex justify-between items-center mb-5">
                     <span className="text-base font-bold text-gray-900">
                       총 결제금액
@@ -199,7 +202,7 @@ export default function CartPage() {
 
                   <button
                     onClick={() => router.push("/checkout")}
-                    className="w-full h-12 rounded-xl bg-gradient-to-r from-primary-700 to-primary-500 text-white font-semibold shadow-lg shadow-primary-700/20 transition-all duration-200 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary-700/25"
+                    className="w-full h-12 rounded-xl bg-primary-700 hover:bg-primary-600 text-white font-semibold shadow-sm transition-all duration-200"
                   >
                     결제하기
                   </button>

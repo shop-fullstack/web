@@ -23,7 +23,7 @@ export function ChatMessage({ message }: { message: ChatMessageType }) {
         <div
           className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap ${
             isUser
-              ? "rounded-br-md bg-gradient-to-r from-primary-700 to-primary-600 text-white"
+              ? "rounded-br-md bg-primary-700 text-white"
               : "rounded-bl-md bg-white text-gray-800 border border-gray-100 shadow-sm"
           }`}
         >
@@ -49,6 +49,7 @@ export function ChatMessage({ message }: { message: ChatMessageType }) {
                   </div>
                   <button
                     onClick={() => addItem(product, 1)}
+                    aria-label={`${product.name} 장바구니에 담기`}
                     className="shrink-0 flex h-7 w-7 items-center justify-center rounded-lg bg-primary-50 text-primary-700 hover:bg-primary-100 transition-colors"
                   >
                     <ShoppingBag size={12} />
@@ -63,7 +64,7 @@ export function ChatMessage({ message }: { message: ChatMessageType }) {
         {message.action && (
           <Link
             href={message.action.payload}
-            className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-primary-50 to-indigo-50 border border-primary-200 px-3.5 py-1.5 text-xs font-semibold text-primary-700 hover:from-primary-100 hover:to-indigo-100 transition-all"
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary-50 border border-primary-200 px-3.5 py-1.5 text-xs font-semibold text-primary-700 hover:bg-primary-100 transition-all"
           >
             {message.action.label} →
           </Link>

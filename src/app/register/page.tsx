@@ -33,7 +33,7 @@ const itemVariants = {
 };
 
 const inputClassName =
-  "w-full h-12 px-4 border border-gray-200/80 rounded-xl bg-white/80 text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400";
+  "w-full h-12 px-4 border border-gray-200 rounded-xl bg-white text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -88,19 +88,13 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center px-4 py-12 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-primary-50">
-      {/* Decorative background elements */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-primary-200/30 blur-[120px]" />
-        <div className="absolute -bottom-40 -right-40 h-[600px] w-[600px] rounded-full bg-primary-300/20 blur-[140px]" />
-        <div className="absolute top-1/3 right-1/4 h-[300px] w-[300px] rounded-full bg-violet-200/20 blur-[100px]" />
-      </div>
+    <div className="relative min-h-screen flex items-center justify-center px-4 py-12 overflow-hidden bg-gray-50">
 
       <motion.div
         initial={{ opacity: 0, y: 24, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="relative z-10 w-full max-w-[560px] rounded-3xl border border-white/60 bg-white/70 p-10 shadow-2xl shadow-gray-200/50 backdrop-blur-xl"
+        className="relative z-10 w-full max-w-[560px] rounded-2xl border border-gray-200 bg-white p-10 shadow-sm"
       >
         <motion.div
           variants={containerVariants}
@@ -110,7 +104,7 @@ export default function RegisterPage() {
           {/* Title */}
           <motion.div variants={itemVariants} className="text-center mb-2">
             <div className="inline-flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary-700 to-primary-500 shadow-lg shadow-primary-700/25">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-700">
                 <svg
                   width="18"
                   height="18"
@@ -173,13 +167,13 @@ export default function RegisterPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="비밀번호를 입력해주세요"
-                  className="w-full h-12 px-4 pr-11 border border-gray-200/80 rounded-xl bg-white/80 text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400"
+                  className="w-full h-12 px-4 pr-11 border border-gray-200 rounded-xl bg-white text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition-colors"
-                  tabIndex={-1}
+                  aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 표시"}
                 >
                   <EyeIcon open={showPassword} />
                 </button>
@@ -201,13 +195,13 @@ export default function RegisterPage() {
                   value={passwordConfirm}
                   onChange={(e) => setPasswordConfirm(e.target.value)}
                   placeholder="비밀번호를 다시 입력해주세요"
-                  className="w-full h-12 px-4 pr-11 border border-gray-200/80 rounded-xl bg-white/80 text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400"
+                  className="w-full h-12 px-4 pr-11 border border-gray-200 rounded-xl bg-white text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition-colors"
-                  tabIndex={-1}
+                  aria-label={showPasswordConfirm ? "비밀번호 숨기기" : "비밀번호 표시"}
                 >
                   <EyeIcon open={showPasswordConfirm} />
                 </button>
@@ -220,7 +214,7 @@ export default function RegisterPage() {
                 <div className="w-full border-t border-gray-200/80" />
               </div>
               <div className="relative flex justify-center">
-                <span className="relative z-10 bg-white/70 backdrop-blur-sm px-4 text-sm font-semibold text-primary-700">
+                <span className="relative z-10 bg-white px-4 text-sm font-semibold text-primary-700">
                   사업자 정보
                 </span>
               </div>
@@ -257,7 +251,8 @@ export default function RegisterPage() {
                 id="businessType"
                 value={businessType}
                 onChange={(e) => setBusinessType(e.target.value)}
-                className="w-full h-12 px-4 border border-gray-200/80 rounded-xl bg-white/80 text-sm text-gray-900 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394a3b8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:20px] bg-[right_14px_center] bg-no-repeat"
+                aria-label="업종 선택"
+                className="w-full h-12 px-4 border border-gray-200 rounded-xl bg-white text-sm text-gray-900 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394a3b8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:20px] bg-[right_14px_center] bg-no-repeat"
               >
                 <option value="" disabled>
                   업종을 선택해주세요
@@ -324,7 +319,7 @@ export default function RegisterPage() {
                 disabled={registerMutation.isPending}
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                className="relative w-full h-12 bg-gradient-to-r from-primary-700 to-primary-500 text-white font-semibold rounded-xl shadow-lg shadow-primary-700/25 transition-all duration-200 hover:shadow-xl hover:shadow-primary-700/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg"
+                className="relative w-full h-12 bg-primary-700 hover:bg-primary-500 text-white font-semibold rounded-xl shadow-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {registerMutation.isPending ? (
                   <span className="inline-flex items-center gap-2">

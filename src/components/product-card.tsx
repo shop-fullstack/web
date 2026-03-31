@@ -30,7 +30,7 @@ export function ProductCard({ product }: ProductCardProps) {
       className="group flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-shadow duration-300 hover:shadow-xl hover:shadow-gray-200/50"
     >
       {/* Image */}
-      <Link href={`/products/${product.id}`} className="relative overflow-hidden">
+      <Link href={`/products/${product.id}`} aria-label={product.name} className="relative overflow-hidden">
         <div className={`flex h-[200px] items-center justify-center bg-gradient-to-br ${visual.gradient} transition-transform duration-500 group-hover:scale-105`}>
           <span className="text-6xl drop-shadow-sm transition-transform duration-500 group-hover:scale-110">
             {visual.emoji}
@@ -68,6 +68,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <motion.button
           type="button"
           onClick={handleAdd}
+          aria-label={`${product.name} 장바구니에 담기`}
           whileTap={{ scale: 0.97 }}
           className={`mt-1 flex h-11 w-full items-center justify-center gap-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
             added

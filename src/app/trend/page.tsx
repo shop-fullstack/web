@@ -35,7 +35,7 @@ function getChangeIndicator(change: TrendRankItem["change"]) {
       return <span className="text-gray-400">—</span>;
     case "new":
       return (
-        <span className="rounded-full bg-gradient-to-r from-violet-500 to-indigo-500 px-2 py-0.5 text-[10px] font-bold text-white tracking-wide">
+        <span className="rounded-full bg-primary-700 px-2 py-0.5 text-[10px] font-bold text-white tracking-wide">
           NEW
         </span>
       );
@@ -45,21 +45,21 @@ function getChangeIndicator(change: TrendRankItem["change"]) {
 function RankBadge({ rank }: { rank: number }) {
   if (rank === 1) {
     return (
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-xs font-bold text-white shadow-md shadow-amber-200/50">
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-700 text-xs font-bold text-white">
         {rank}
       </span>
     );
   }
   if (rank === 2) {
     return (
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-slate-300 to-slate-400 text-xs font-bold text-white shadow-md shadow-slate-200/50">
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-500 text-xs font-bold text-white">
         {rank}
       </span>
     );
   }
   if (rank === 3) {
     return (
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-amber-600 to-amber-700 text-xs font-bold text-white shadow-md shadow-amber-200/50">
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-300 text-xs font-bold text-primary-900">
         {rank}
       </span>
     );
@@ -75,36 +75,28 @@ const statsConfig = [
   {
     icon: ShoppingBag,
     label: "최근 인기 상품",
-    gradient: "from-blue-500 to-indigo-500",
-    bgGradient: "from-blue-50 to-indigo-50",
   },
   {
     icon: TrendingUp,
     label: "급상승 상품",
-    gradient: "from-emerald-500 to-teal-500",
-    bgGradient: "from-emerald-50 to-teal-50",
   },
   {
     icon: BarChart3,
     label: "카테고리 구분 상품",
-    gradient: "from-violet-500 to-purple-500",
-    bgGradient: "from-violet-50 to-purple-50",
   },
   {
     icon: Users,
     label: "누적 구매자",
-    gradient: "from-orange-500 to-rose-500",
-    bgGradient: "from-orange-50 to-rose-50",
   },
 ];
 
-const barGradients = [
-  "from-blue-500 to-indigo-500",
-  "from-violet-500 to-purple-500",
-  "from-emerald-500 to-teal-500",
-  "from-orange-500 to-amber-500",
-  "from-rose-500 to-pink-500",
-  "from-cyan-500 to-sky-500",
+const barOpacities = [
+  "opacity-100",
+  "opacity-85",
+  "opacity-70",
+  "opacity-60",
+  "opacity-50",
+  "opacity-40",
 ];
 
 export default function TrendReportPage() {
@@ -151,7 +143,7 @@ export default function TrendReportPage() {
     <div className="min-h-screen bg-gray-50/50">
       <Header />
 
-      <main className="mx-auto max-w-layout px-20 py-10 flex flex-col gap-8">
+      <main className="mx-auto max-w-layout px-4 md:px-8 lg:px-20 py-10 flex flex-col gap-8">
         {/* Title section */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -190,7 +182,7 @@ export default function TrendReportPage() {
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="grid grid-cols-4 gap-5"
+              className="grid grid-cols-2 lg:grid-cols-4 gap-5"
             >
               {statsConfig.map((stat, i) => {
                 const Icon = stat.icon;
@@ -199,10 +191,10 @@ export default function TrendReportPage() {
                     key={stat.label}
                     variants={itemVariants}
                     whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                    className={`rounded-2xl bg-gradient-to-br ${stat.bgGradient} p-5 border border-white/60 shadow-sm hover:shadow-md transition-shadow cursor-default`}
+                    className="rounded-2xl bg-primary-50 p-5 border border-white/60 shadow-sm"
                   >
                     <div className="flex items-center gap-2.5">
-                      <div className={`flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br ${stat.gradient} shadow-sm`}>
+                      <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary-700">
                         <Icon size={15} className="text-white" />
                       </div>
                       <span className="text-sm font-medium text-gray-600">{stat.label}</span>
@@ -228,7 +220,7 @@ export default function TrendReportPage() {
             {aiInsight && <AiInsightCard insight={aiInsight} />}
 
             {/* Two-column layout */}
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Left: TOP 10 table */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -301,7 +293,7 @@ export default function TrendReportPage() {
                           initial={{ width: 0 }}
                           animate={{ width: `${cat.percentage}%` }}
                           transition={{ duration: 0.8, delay: 0.5 + i * 0.1, ease: "easeOut" as const }}
-                          className={`absolute left-0 top-0 h-7 rounded-full bg-gradient-to-r ${barGradients[i % barGradients.length]} shadow-sm`}
+                          className={`absolute left-0 top-0 h-7 rounded-full bg-gradient-to-r from-primary-500 to-primary-300 ${barOpacities[i % barOpacities.length]}`}
                         />
                       </div>
                       <span className="w-12 shrink-0 text-right text-sm font-bold text-gray-700">

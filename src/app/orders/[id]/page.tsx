@@ -94,7 +94,7 @@ export default function OrderDetailPage() {
         initial="hidden"
         animate="visible"
         variants={stagger}
-        className="mx-auto max-w-layout px-8 py-8 md:px-20"
+        className="mx-auto max-w-layout px-4 md:px-8 lg:px-20 py-8"
       >
         <motion.div variants={fadeUp}>
           <Link
@@ -123,12 +123,12 @@ export default function OrderDetailPage() {
                 { label: "주문일", value: formatLongDate(order.created_at) },
               ].map((item) => (
                 <div key={item.label}>
-                  <span className="text-xs font-medium text-gray-400">{item.label}</span>
+                  <span className="text-xs font-medium text-gray-500">{item.label}</span>
                   <p className="mt-1 text-sm font-semibold text-gray-900">{item.value}</p>
                 </div>
               ))}
             </div>
-            <div className="rounded-xl bg-gradient-to-r from-primary-50 to-blue-50 px-5 py-3">
+            <div className="rounded-xl bg-primary-50 px-5 py-3">
               <span className="text-xs text-gray-500">총 금액</span>
               <p className="text-lg font-bold text-primary-700">
                 {order.total_amount.toLocaleString()}원
@@ -142,19 +142,24 @@ export default function OrderDetailPage() {
           variants={fadeUp}
           className="mt-4 rounded-2xl border border-gray-100 bg-white px-8 py-10 shadow-sm md:px-16"
         >
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between" role="list">
             {DELIVERY_STEPS.map((step, i) => {
               const isCompleted = i < completedCount;
               const isCurrent = i === completedCount - 1;
               const Icon = STEP_ICONS[i];
 
               return (
-                <div key={step} className="relative flex flex-1 flex-col items-center">
+                <div
+                  key={step}
+                  className="relative flex flex-1 flex-col items-center"
+                  role="listitem"
+                  {...(isCurrent ? { "aria-current": "step" as const } : {})}
+                >
                   {i < DELIVERY_STEPS.length - 1 && (
                     <div
                       className={`absolute top-6 left-[calc(50%+24px)] h-[3px] w-[calc(100%-48px)] rounded-full transition-colors ${
                         i < completedCount - 1
-                          ? "bg-gradient-to-r from-primary-700 to-primary-500"
+                          ? "bg-primary-700"
                           : "bg-gray-100"
                       }`}
                     />
@@ -167,8 +172,8 @@ export default function OrderDetailPage() {
                     className={`relative z-10 flex h-12 w-12 items-center justify-center rounded-full transition-all ${
                       isCompleted
                         ? isCurrent
-                          ? "bg-gradient-to-br from-primary-700 to-primary-500 text-white shadow-lg shadow-primary-500/30 ring-4 ring-primary-100"
-                          : "bg-gradient-to-br from-primary-700 to-primary-500 text-white"
+                          ? "bg-primary-700 text-white ring-4 ring-primary-100"
+                          : "bg-primary-700 text-white"
                         : "bg-gray-100 text-gray-400"
                     }`}
                   >
@@ -177,12 +182,12 @@ export default function OrderDetailPage() {
 
                   <p
                     className={`mt-3 text-sm font-medium ${
-                      isCompleted ? "text-primary-700" : "text-gray-400"
+                      isCompleted ? "text-primary-700" : "text-gray-500"
                     }`}
                   >
                     {step}
                   </p>
-                  <p className="mt-1 text-xs text-gray-400">{stepDates[i] ?? "-"}</p>
+                  <p className="mt-1 text-xs text-gray-500">{stepDates[i] ?? "-"}</p>
                 </div>
               );
             })}
@@ -202,14 +207,14 @@ export default function OrderDetailPage() {
               { label: "예상 배송일", value: order.delivery_date ? formatLongDate(order.delivery_date) : "-" },
             ].map((row) => (
               <div key={row.label} className="flex items-center gap-4">
-                <span className="w-24 text-sm text-gray-400">{row.label}</span>
+                <span className="w-24 text-sm text-gray-500">{row.label}</span>
                 <span className="text-sm font-medium text-gray-900">{row.value}</span>
               </div>
             ))}
           </div>
         </motion.div>
 
-        <motion.p variants={fadeUp} className="mt-8 text-center text-xs text-gray-400">
+        <motion.p variants={fadeUp} className="mt-8 text-center text-xs text-gray-500">
           ※ 배송 조회는 UI 데모입니다. 실제 배송 연동은 포함되지 않습니다.
         </motion.p>
       </motion.main>

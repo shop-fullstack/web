@@ -15,13 +15,13 @@ const STATUS_TABS = ["전체", "주문완료", "배송중", "배송완료"] as c
 function getStatusBadgeClasses(status: Order["status"]) {
   switch (status) {
     case "배송완료":
-      return "bg-emerald-50 text-emerald-600 border border-emerald-200 shadow-sm shadow-emerald-100";
+      return "bg-emerald-50 text-emerald-600 border border-emerald-200";
     case "배송중":
-      return "bg-amber-50 text-amber-600 border border-amber-200 shadow-sm shadow-amber-100";
+      return "bg-amber-50 text-amber-600 border border-amber-200";
     case "주문완료":
-      return "bg-blue-50 text-blue-600 border border-blue-200 shadow-sm shadow-blue-100";
+      return "bg-blue-50 text-blue-600 border border-blue-200";
     case "배송준비":
-      return "bg-violet-50 text-violet-600 border border-violet-200 shadow-sm shadow-violet-100";
+      return "bg-gray-100 text-gray-600 border border-gray-200";
     default:
       return "bg-gray-100 text-gray-500 border border-gray-200";
   }
@@ -70,7 +70,7 @@ export default function OrdersPage() {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <main className="mx-auto max-w-layout px-20 py-8">
+      <main className="mx-auto max-w-layout px-4 md:px-8 lg:px-20 py-8">
         {/* Title */}
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
@@ -87,12 +87,15 @@ export default function OrdersPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
           className="mt-6 inline-flex rounded-2xl bg-gray-100 p-1 gap-1"
+          role="tablist"
         >
           {STATUS_TABS.map((tab, i) => {
             const isActive = activeTab === tab;
             return (
               <button
                 key={tab}
+                role="tab"
+                aria-selected={isActive}
                 onClick={() => setActiveTab(tab)}
                 className={`relative rounded-xl px-5 py-2.5 text-sm font-medium transition-all duration-200 ${
                   isActive
@@ -119,7 +122,7 @@ export default function OrdersPage() {
         {isLoading && (
           <div className="py-16 flex flex-col items-center">
             <div className="h-8 w-8 rounded-full border-2 border-primary-200 border-t-primary-700 animate-spin mb-4" />
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-500 text-sm">
               주문 내역을 불러오는 중...
             </p>
           </div>
@@ -134,7 +137,7 @@ export default function OrdersPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="py-16 text-center text-gray-400"
+                  className="py-16 text-center text-gray-500"
                 >
                   해당 상태의 주문이 없습니다.
                 </motion.p>
@@ -153,11 +156,11 @@ export default function OrdersPage() {
                   {/* Top Row: date, order number, status badge */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <span className="text-sm font-medium text-gray-400">
+                      <span className="text-sm font-medium text-gray-500">
                         {formatDate(order.created_at)}
                       </span>
                       <span className="h-1 w-1 rounded-full bg-gray-300" />
-                      <span className="text-sm text-gray-400">
+                      <span className="text-sm text-gray-500">
                         주문번호 {order.id}
                       </span>
                     </div>
@@ -187,6 +190,7 @@ export default function OrdersPage() {
                       배송 조회
                     </Link>
                     <button
+                      aria-label="재주문하기"
                       onClick={async () => {
                         try {
                           const results = await Promise.all(
@@ -204,7 +208,7 @@ export default function OrdersPage() {
                           alert("일부 상품을 불러올 수 없습니다. 다시 시도해주세요.");
                         }
                       }}
-                      className="rounded-xl bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-700 transition-all duration-200 hover:bg-primary-700 hover:text-white hover:shadow-md hover:shadow-primary-700/20"
+                      className="rounded-xl bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-700 transition-all duration-200 hover:bg-primary-700 hover:text-white"
                     >
                       재주문
                     </button>

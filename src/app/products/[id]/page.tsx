@@ -27,7 +27,7 @@ export default function ProductDetailPage({
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50/80 to-white">
         <Header />
-        <div className="mx-auto max-w-layout px-20 py-10">
+        <div className="mx-auto max-w-layout px-4 md:px-8 lg:px-20 py-10">
           {/* Breadcrumb skeleton */}
           <div className="mb-8 flex items-center gap-2">
             <div className="h-4 w-12 animate-pulse rounded-lg bg-gray-200" />
@@ -36,7 +36,7 @@ export default function ProductDetailPage({
             <div className="h-4 w-3 animate-pulse rounded bg-gray-200" />
             <div className="h-4 w-32 animate-pulse rounded-lg bg-gray-200" />
           </div>
-          <div className="flex gap-14">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-14">
             {/* Left skeleton */}
             <div className="flex-1">
               <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-100">
@@ -99,7 +99,7 @@ export default function ProductDetailPage({
           <button
             type="button"
             onClick={() => router.push("/products")}
-            className="mt-5 rounded-2xl bg-gradient-to-r from-primary-700 to-primary-500 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-200 transition-all hover:shadow-xl hover:shadow-primary-300"
+            className="mt-5 rounded-xl bg-primary-700 hover:bg-primary-600 px-8 py-3 text-sm font-semibold text-white shadow-sm transition-all"
           >
             상품 목록으로
           </button>
@@ -133,7 +133,7 @@ export default function ProductDetailPage({
     <div className="min-h-screen bg-gradient-to-b from-gray-50/80 to-white">
       <Header />
 
-      <div className="mx-auto max-w-layout px-20 py-10">
+      <div className="mx-auto max-w-layout px-4 md:px-8 lg:px-20 py-10">
         {/* Breadcrumb */}
         <motion.nav
           initial={{ opacity: 0, y: -8 }}
@@ -162,7 +162,7 @@ export default function ProductDetailPage({
           </span>
         </motion.nav>
 
-        <div className="flex gap-14">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-14">
           {/* Left column - Images */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -224,7 +224,7 @@ export default function ProductDetailPage({
             </h1>
 
             {/* Price box */}
-            <div className="mt-6 rounded-2xl bg-gradient-to-r from-primary-50 to-blue-50 p-5 ring-1 ring-primary-100/50">
+            <div className="mt-6 rounded-2xl bg-primary-50 p-5 ring-1 ring-primary-100/50">
               {product.price_per_unit !== product.price_per_box && (
                 <p className="text-sm text-gray-400 line-through">
                   개당 단가: {product.price_per_unit.toLocaleString()}원
@@ -246,6 +246,7 @@ export default function ProductDetailPage({
                 <motion.button
                   type="button"
                   onClick={handleDecrease}
+                  aria-label="수량 감소"
                   whileHover={{ backgroundColor: "rgba(0,0,0,0.04)" }}
                   whileTap={{ scale: 0.92 }}
                   className="flex h-11 w-11 items-center justify-center text-gray-500 transition-colors disabled:opacity-40"
@@ -259,6 +260,7 @@ export default function ProductDetailPage({
                 <motion.button
                   type="button"
                   onClick={handleIncrease}
+                  aria-label="수량 증가"
                   whileHover={{ backgroundColor: "rgba(0,0,0,0.04)" }}
                   whileTap={{ scale: 0.92 }}
                   className="flex h-11 w-11 items-center justify-center text-gray-500 transition-colors"
@@ -286,10 +288,10 @@ export default function ProductDetailPage({
                 onClick={handleAddToCart}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`flex h-14 flex-1 items-center justify-center gap-2 rounded-2xl border-2 text-sm font-semibold transition-all duration-200 ${
+                className={`flex h-14 flex-1 items-center justify-center gap-2 rounded-xl border-2 text-sm font-semibold transition-all duration-200 ${
                   added
-                    ? "border-emerald-300 bg-emerald-50 text-emerald-600"
-                    : "border-primary-200 bg-white text-primary-700 hover:border-primary-300 hover:bg-primary-50 hover:shadow-md"
+                    ? "border-primary-300 bg-primary-50 text-primary-700"
+                    : "border-primary-200 bg-white text-primary-700 hover:border-primary-300 hover:bg-primary-50 hover:shadow-sm"
                 }`}
               >
                 <AnimatePresence mode="wait">
@@ -321,9 +323,9 @@ export default function ProductDetailPage({
               <motion.button
                 type="button"
                 onClick={handleBuyNow}
-                whileHover={{ scale: 1.02, boxShadow: "0 8px 30px -4px rgba(var(--color-primary-700), 0.4)" }}
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex h-14 flex-1 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-primary-700 to-primary-500 text-sm font-semibold text-white shadow-lg shadow-primary-200 transition-all duration-200 hover:shadow-xl hover:shadow-primary-300"
+                className="flex h-14 flex-1 items-center justify-center gap-2 rounded-xl bg-primary-700 hover:bg-primary-600 text-sm font-semibold text-white shadow-sm transition-all duration-200"
               >
                 <Zap size={18} />
                 바로 구매
@@ -333,6 +335,12 @@ export default function ProductDetailPage({
             {/* Specs table */}
             <div className="mt-10 overflow-hidden rounded-2xl ring-1 ring-gray-100">
               <table className="w-full text-sm">
+                <thead className="sr-only">
+                  <tr>
+                    <th>항목</th>
+                    <th>내용</th>
+                  </tr>
+                </thead>
                 <tbody>
                   <tr>
                     <td className="w-[130px] bg-gray-50/80 px-5 py-3.5 font-semibold text-gray-500">

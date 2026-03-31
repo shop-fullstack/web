@@ -82,7 +82,7 @@ export default function CheckoutPage() {
           결제하기
         </motion.h1>
 
-        <div className="flex gap-8">
+        <div className="flex flex-col lg:flex-row gap-8">
           {/* Left column - delivery & payment info */}
           <div className="flex-1 space-y-6">
             {/* Delivery info */}
@@ -99,7 +99,7 @@ export default function CheckoutPage() {
 
               <div className="space-y-4">
                 <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
                     배송지 주소
                   </span>
                   <p className="mt-1.5 text-sm font-medium text-gray-900">
@@ -108,7 +108,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
                     희망 배송일
                   </span>
                   <p className="mt-1.5 text-sm font-medium text-gray-900">
@@ -137,7 +137,7 @@ export default function CheckoutPage() {
                 결제 수단
               </h2>
 
-              <div className="space-y-2">
+              <div className="space-y-2" role="radiogroup" aria-label="결제 수단 선택">
                 {PAYMENT_METHODS.map((method) => {
                   const isSelected = paymentMethod === method.value;
                   const Icon = method.icon;
@@ -206,6 +206,7 @@ export default function CheckoutPage() {
                 type="button"
                 role="checkbox"
                 aria-checked={agreed}
+                aria-label="결제 동의"
                 onClick={() => setAgreed(!agreed)}
                 className={`flex h-5 w-5 items-center justify-center rounded-md border-2 transition-all duration-200 ${
                   agreed
@@ -222,7 +223,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Right column - order summary */}
-          <div className="w-[400px] flex-shrink-0">
+          <div className="w-full lg:w-[400px] flex-shrink-0">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -240,7 +241,7 @@ export default function CheckoutPage() {
                       key={item.product.id}
                       className="flex items-center justify-between text-sm"
                     >
-                      <span className="text-gray-400 truncate mr-3">
+                      <span className="text-gray-500 truncate mr-3">
                         {item.product.name} x {item.quantity}
                       </span>
                       <span className="text-gray-900 font-medium whitespace-nowrap">
@@ -251,8 +252,8 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Gradient total section */}
-              <div className="bg-gradient-to-r from-primary-50 to-blue-50 px-6 py-5">
+              {/* Total section */}
+              <div className="bg-primary-50 px-6 py-5">
                 <div className="flex justify-between items-center mb-5">
                   <span className="text-base font-bold text-gray-900">
                     총 결제금액
@@ -265,7 +266,7 @@ export default function CheckoutPage() {
                 <button
                   onClick={handleCheckout}
                   disabled={!agreed || orderMutation.isPending}
-                  className="w-full h-12 rounded-xl bg-gradient-to-r from-primary-700 to-primary-500 text-white font-semibold shadow-lg shadow-primary-700/20 transition-all duration-200 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary-700/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-lg flex items-center justify-center gap-2"
+                  className="w-full h-12 rounded-xl bg-primary-700 hover:bg-primary-600 text-white font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {orderMutation.isPending ? (
                     <>

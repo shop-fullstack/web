@@ -79,6 +79,7 @@ export function Header() {
             <>
               <Link
                 href="/cart"
+                aria-label={`장바구니${cartCount > 0 ? ` (${cartCount}개)` : ""}`}
                 className="relative flex h-10 w-10 items-center justify-center rounded-xl text-gray-500 transition-all duration-200 hover:bg-gray-50 hover:text-primary-700"
               >
                 <ShoppingCart size={20} />
@@ -88,7 +89,7 @@ export function Header() {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       exit={{ scale: 0 }}
-                      className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-gradient-to-r from-primary-500 to-blue-500 px-1 text-[10px] font-bold text-white shadow-lg shadow-primary-500/30"
+                      className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-700 px-1 text-[10px] font-bold text-white shadow-lg shadow-primary-700/30"
                     >
                       {cartCount}
                     </motion.span>
@@ -112,6 +113,8 @@ export function Header() {
           )}
           <button
             type="button"
+            aria-label="메뉴 열기"
+            aria-expanded={mobileOpen}
             className="flex h-10 w-10 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-50 md:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
           >

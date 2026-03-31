@@ -51,16 +51,17 @@ export function ChatWindow() {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 20, scale: 0.95 }}
       transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
-      className="fixed bottom-20 right-4 z-50 flex h-[520px] w-[380px] flex-col overflow-hidden rounded-2xl bg-gray-50 shadow-2xl border border-gray-200"
+      className="fixed inset-0 sm:inset-auto sm:bottom-20 sm:right-4 z-50 flex w-full h-full sm:w-[380px] sm:h-[520px] flex-col overflow-hidden sm:rounded-2xl bg-gray-50 shadow-2xl border border-gray-200"
     >
       {/* Header */}
-      <div className="flex items-center justify-between bg-gradient-to-r from-primary-700 to-primary-500 px-5 py-3.5">
+      <div className="flex items-center justify-between bg-primary-700 px-5 py-3.5">
         <div className="flex items-center gap-2">
           <Sparkles size={16} className="text-white/80" />
           <span className="text-sm font-semibold text-white">BizMart AI 어시스턴트</span>
         </div>
         <button
           onClick={toggleOpen}
+          aria-label="채팅 닫기"
           className="flex h-7 w-7 items-center justify-center rounded-lg text-white/70 hover:bg-white/10 hover:text-white transition-colors"
         >
           <X size={16} />
@@ -71,8 +72,8 @@ export function ChatWindow() {
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
         {messages.length === 0 && !isTyping && (
           <div className="flex flex-col items-center py-8">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-100 to-indigo-100">
-              <Sparkles size={24} className="text-indigo-500" />
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary-50">
+              <Sparkles size={24} className="text-primary-700" />
             </div>
             <p className="mt-4 text-sm font-semibold text-gray-900">무엇을 도와드릴까요?</p>
             <p className="mt-1 text-xs text-gray-400 text-center">상품 추천, 주문 확인, 트렌드 등을 물어보세요</p>
@@ -104,12 +105,13 @@ export function ChatWindow() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="메시지를 입력하세요..."
+          aria-label="메시지 입력"
           className="flex-1 rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
         />
         <button
           type="submit"
           disabled={!input.trim()}
-          className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-primary-700 to-primary-500 text-white shadow-sm disabled:opacity-40 hover:shadow-md transition-all"
+          className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-700 text-white shadow-sm disabled:opacity-40 hover:shadow-md transition-all"
         >
           <Send size={16} />
         </button>

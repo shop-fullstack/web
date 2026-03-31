@@ -69,10 +69,9 @@ export default function RecommendPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 px-10 py-10 text-white shadow-xl"
+          className="relative overflow-hidden rounded-2xl bg-primary-700 px-10 py-10 text-white shadow-xl"
         >
-          <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
-          <div className="absolute -left-10 bottom-0 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
+          <div className="absolute inset-0 bg-primary-500/20" />
           <div className="relative">
             <div className="flex items-center gap-2 text-sm font-medium text-white/80">
               <Sparkles size={16} />
@@ -110,7 +109,7 @@ export default function RecommendPage() {
                 {isActive && (
                   <motion.div
                     layoutId="recTab"
-                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 shadow-sm"
+                    className="absolute inset-0 rounded-xl bg-primary-700 shadow-sm"
                     transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                   />
                 )}
@@ -132,7 +131,7 @@ export default function RecommendPage() {
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="mt-6 grid grid-cols-4 gap-5"
+              className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
             >
               {filtered.map((item) => (
                 <motion.div key={item.product.id} variants={itemVariants}>
@@ -143,7 +142,7 @@ export default function RecommendPage() {
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="col-span-4 py-16 text-center text-gray-400"
+                  className="col-span-full py-16 text-center text-gray-400"
                 >
                   해당 유형의 추천 상품이 없습니다
                 </motion.p>

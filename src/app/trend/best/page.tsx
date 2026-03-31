@@ -38,14 +38,14 @@ const cardVariants = {
 
 function RankNumber({ rank }: { rank: number }) {
   if (rank <= 3) {
-    const gradients: Record<number, string> = {
-      1: "from-amber-400 to-orange-500 shadow-amber-200/50",
-      2: "from-slate-300 to-slate-400 shadow-slate-200/50",
-      3: "from-amber-600 to-amber-700 shadow-amber-200/40",
+    const styles: Record<number, string> = {
+      1: "bg-primary-700 text-white",
+      2: "bg-primary-500 text-white",
+      3: "bg-primary-300 text-primary-900",
     };
     return (
       <span
-        className={`flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br ${gradients[rank]} text-sm font-bold text-white shadow-md`}
+        className={`flex h-9 w-9 items-center justify-center rounded-full ${styles[rank]} text-sm font-bold`}
       >
         {rank}
       </span>
@@ -86,7 +86,7 @@ export default function BestSellersPage() {
     <div className="min-h-screen bg-gray-50/50">
       <Header />
 
-      <main className="mx-auto max-w-layout px-20 py-10 flex flex-col gap-8">
+      <main className="mx-auto max-w-layout px-4 md:px-8 lg:px-20 py-10 flex flex-col gap-8">
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -107,18 +107,21 @@ export default function BestSellersPage() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
+          role="tablist"
           className="flex gap-2 overflow-x-auto rounded-2xl bg-white p-1.5 shadow-sm border border-gray-100"
         >
           {businessTypes.map((type) => (
             <button
               key={type}
+              role="tab"
+              aria-selected={activeTab === type}
               onClick={() => setActiveTab(type)}
               className="relative shrink-0 rounded-xl px-5 py-2.5 text-sm font-medium transition-colors"
             >
               {activeTab === type && (
                 <motion.div
                   layoutId="activeTabBg"
-                  className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 shadow-md shadow-primary-200/50"
+                  className="absolute inset-0 rounded-xl bg-primary-700"
                   transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                 />
               )}
@@ -134,7 +137,7 @@ export default function BestSellersPage() {
 
         {/* Section title */}
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-700 shadow-sm">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-700">
             <Package size={15} className="text-white" />
           </div>
           <h2 className="text-lg font-bold text-gray-900">
@@ -207,10 +210,11 @@ export default function BestSellersPage() {
                           onClick={() => handleAddToCart(item)}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
+                          aria-label={`${item.name} 담기`}
                           className={`shrink-0 flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-semibold transition-all ${
                             addedId === item.product_id
                               ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
-                              : "bg-gradient-to-r from-primary-50 to-primary-100 text-primary-700 hover:from-primary-600 hover:to-primary-700 hover:text-white hover:shadow-md hover:shadow-primary-200/50"
+                              : "bg-primary-50 text-primary-700 hover:bg-primary-700 hover:text-white"
                           }`}
                         >
                           {addedId === item.product_id ? (
@@ -235,7 +239,7 @@ export default function BestSellersPage() {
               {frequentlyBoughtTogether.length > 0 && (
                 <div>
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 shadow-sm">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-500">
                       <ShoppingCart size={15} className="text-white" />
                     </div>
                     <h2 className="text-lg font-bold text-gray-900">
@@ -246,7 +250,7 @@ export default function BestSellersPage() {
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
-                    className="grid grid-cols-5 gap-4"
+                    className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4"
                   >
                     {frequentlyBoughtTogether.map((item) => (
                       <motion.div

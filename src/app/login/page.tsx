@@ -54,19 +54,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-primary-50">
-      {/* Decorative background elements */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-primary-200/30 blur-[120px]" />
-        <div className="absolute -bottom-40 -right-40 h-[600px] w-[600px] rounded-full bg-primary-300/20 blur-[140px]" />
-        <div className="absolute top-1/3 right-1/4 h-[300px] w-[300px] rounded-full bg-violet-200/20 blur-[100px]" />
-      </div>
+    <div className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden bg-gray-50">
 
       <motion.div
         initial={{ opacity: 0, y: 24, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="relative z-10 w-full max-w-[480px] rounded-3xl border border-white/60 bg-white/70 p-10 shadow-2xl shadow-gray-200/50 backdrop-blur-xl"
+        className="relative z-10 w-full max-w-[480px] rounded-2xl border border-gray-200 bg-white p-10 shadow-sm"
       >
         <motion.div
           variants={containerVariants}
@@ -76,7 +70,7 @@ export default function LoginPage() {
           {/* Logo */}
           <motion.div variants={itemVariants} className="text-center mb-2">
             <div className="inline-flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary-700 to-primary-500 shadow-lg shadow-primary-700/25">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-700">
                 <svg
                   width="18"
                   height="18"
@@ -126,7 +120,8 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="이메일을 입력해주세요"
-                className="w-full h-12 px-4 border border-gray-200/80 rounded-xl bg-white/80 text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400"
+                aria-label="이메일"
+                className="w-full h-12 px-4 border border-gray-200 rounded-xl bg-white text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400"
               />
             </motion.div>
 
@@ -145,13 +140,14 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="비밀번호를 입력해주세요"
-                  className="w-full h-12 px-4 pr-11 border border-gray-200/80 rounded-xl bg-white/80 text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400"
+                  aria-label="비밀번호"
+                  className="w-full h-12 px-4 pr-11 border border-gray-200 rounded-xl bg-white text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition-colors"
-                  tabIndex={-1}
+                  aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 표시"}
                 >
                   {showPassword ? (
                     <svg
@@ -207,7 +203,7 @@ export default function LoginPage() {
                 disabled={loginMutation.isPending}
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                className="relative w-full h-12 bg-gradient-to-r from-primary-700 to-primary-500 text-white font-semibold rounded-xl shadow-lg shadow-primary-700/25 transition-all duration-200 hover:shadow-xl hover:shadow-primary-700/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg"
+                className="relative w-full h-12 bg-primary-700 hover:bg-primary-500 text-white font-semibold rounded-xl shadow-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loginMutation.isPending ? (
                   <span className="inline-flex items-center gap-2">

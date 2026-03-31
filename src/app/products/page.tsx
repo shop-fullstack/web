@@ -118,7 +118,7 @@ function ProductsContent() {
 
       <div className="mx-auto flex max-w-layout gap-8 px-8 py-8">
         {/* Sidebar */}
-        <aside className="w-[260px] shrink-0">
+        <aside className="hidden lg:block lg:w-[260px] shrink-0">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -152,7 +152,7 @@ function ProductsContent() {
               <h3 className="mb-4 text-sm font-semibold tracking-tight text-gray-900">
                 카테고리
               </h3>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1" role="radiogroup" aria-label="카테고리 필터">
                 {CATEGORIES.map((category) => {
                   const isSelected = selectedCategory === category;
                   return (
@@ -220,7 +220,8 @@ function ProductsContent() {
                 onChange={(e) => setSearchInput(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setIsSearchFocused(false)}
-                className="h-12 w-full rounded-2xl border border-gray-200 bg-white pl-11 pr-4 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 transition-all duration-300 focus:border-primary-300 focus:outline-none focus:ring-4 focus:ring-primary-100 focus:shadow-lg focus:shadow-primary-100/30"
+                aria-label="상품 검색"
+                className="h-12 w-full rounded-2xl border border-gray-200 bg-white pl-11 pr-4 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 transition-all duration-300 focus:border-primary-300 focus:outline-none focus:ring-4 focus:ring-primary-100"
               />
             </div>
             <select
@@ -258,7 +259,7 @@ function ProductsContent() {
               variants={shimmerVariants}
               initial="hidden"
               animate="visible"
-              className="mt-5 grid grid-cols-4 gap-5"
+              className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
             >
               {Array.from({ length: 8 }).map((_, i) => (
                 <motion.div
@@ -316,7 +317,7 @@ function ProductsContent() {
                   variants={containerVariants}
                   initial="hidden"
                   animate="visible"
-                  className="mt-5 grid grid-cols-4 gap-5"
+                  className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
                 >
                   {products.map((product) => (
                     <motion.div key={product.id} variants={itemVariants}>
@@ -400,7 +401,7 @@ function ProductsContent() {
                           onClick={() => setPage(item)}
                           className={`flex h-10 w-10 items-center justify-center rounded-xl text-sm font-medium transition-all duration-200 ${
                             page === item
-                              ? "bg-gradient-to-br from-primary-700 to-primary-500 text-white shadow-md shadow-primary-200"
+                              ? "bg-primary-700 text-white shadow-sm"
                               : "border border-gray-200 bg-white text-gray-600 shadow-sm hover:border-gray-300 hover:bg-gray-50 hover:shadow"
                           }`}
                         >
